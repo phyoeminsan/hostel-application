@@ -28,6 +28,18 @@
                 <i class="fa-solid fa-users me-2"></i> 
                 <span>Students</span>
             </a>
+            <a class="nav-link" href="{{route('backend.student_records.index')}}">
+                <i class="fa-solid fa-users me-2"></i> 
+                <span>Student Record</span>
+            </a>
+            <a class="nav-link" href="{{route('backend.hostels.index')}}">
+                <i class="fa-solid fa-hotel"></i>
+                <span>Hostels</span>
+            </a>
+            <a class="nav-link" href="{{route('backend.rooms.index')}}">
+                <i class="fa-solid fa-bed"></i>
+                <span>Rooms</span>
+            </a>
             <a class="nav-link" href="#"><i class="fa-solid fa-credit-card me-2"></i> Payments</a>
         </div>
     </nav>

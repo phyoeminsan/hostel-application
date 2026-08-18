@@ -65,7 +65,7 @@ class Academic_yearController extends Controller
         $academic_year->update($request->all());
         $academic_year->save();
         return redirect()->route('backend.academic_years.index', compact('academic_year'))
-                         ->with('success', 'ပညာသင်နှစ် အချက်အလက်ကို ပြင်ဆင်ပြီးပါပြီ။');
+                         ->with('success', 'ပညာသင်နှစ် အချက်အလက်ကို အောင်မြင်စွာ ပြင်ဆင်ပြီးပါပြီ။');
     }
 
     /**

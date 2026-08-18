@@ -11,16 +11,24 @@ class student extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'students';
+    protected $primaryKey = 'student_id';
     protected $fillable = [
         'roll_no',
         'name',
         'gender',
         'nrc',
-        'date_of_brith',
+        'date_of_birth',
         'phone_no',
         'address',
         'profile',
         'email',
         'password',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
 }

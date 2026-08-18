@@ -11,6 +11,7 @@ class room extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'rooms';
+    protected $primaryKey = 'room_id';
     protected $fillable = [
         'room_no',
         'floor_no',
@@ -18,4 +19,8 @@ class room extends Model
         'status',
         'hostel_id',
     ];
+
+    public function hostel(){
+        return $this->belongsTo(Hostel::class);
+    }
 }

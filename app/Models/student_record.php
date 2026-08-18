@@ -11,9 +11,22 @@ class student_record extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'student_records';
+    protected $primaryKey = 'record_id';
     protected $fillable = [
         'academic_year_id',
         'year_id',
         'student_id',
     ];
+
+    public function academic_year(){
+        return $this->belongsTo(Academic_year::class, 'academic_year_id');
+    }
+
+    public function year(){
+        return $this->belongsTo(Year::class, 'year_id');
+    }
+
+    public function student(){
+        return $this->belongsTo(Student::class, 'student_id');
+    }
 }
