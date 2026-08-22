@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('hostels', function (Blueprint $table) {
             $table->id('hostel_id');
             $table->string('hostel_name');
+            $table->string('gender');
             $table->string('capacity');
             $table->softDeletes();
             $table->timestamps();

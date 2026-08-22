@@ -73,3 +73,12 @@ body {
     border: 1px solid #ddd;
     padding: 2px;
 }
+
+/* Sidebar သို့မဟုတ် Dropdown အတွက် Scrollbar Styling */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 5px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: rgba(5, 108, 152, 0.2);
+    border-radius: 10px;
+}

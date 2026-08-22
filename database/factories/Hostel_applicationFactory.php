@@ -19,7 +19,8 @@ class Hostel_applicationFactory extends Factory
     {
         return [
             'record_id' => rand(1,10),
-            'hostel_id' => rand(1,10),
+            'hostel_id' => rand(1,3),
+            'apply_date' => $this->faker->date(),
             'status' => $this->faker->randomElement(['pending','approved','rejected']),
         ];
     }

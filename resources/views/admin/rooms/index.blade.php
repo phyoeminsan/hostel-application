@@ -28,7 +28,7 @@
                     <th>Floor No</th>
                     <th>No Of Person</th>
                     <th>Status</th>
-                    <th>HostelID</th>
+                    <th>Hostel</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
@@ -43,7 +43,7 @@
                         <td>{{ $room->floor_no }}</td>
                         <td>{{ $room->no_of_person }}</td>
                         <td>{{ $room->status }}</td>
-                        <td>{{ $room->hostel_id }}</td>
+                        <td>{{ $room->hostel->hostel_name }}</td>
                         <td class="text-end">
                             <a href="{{ route('backend.rooms.edit', $room->room_id) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-edit"></i></a>
                             <button class="btn btn-sm btn-outline-danger delete" data-id="{{ $room->room_id }}"><i class="fa-solid fa-trash"></i></button>

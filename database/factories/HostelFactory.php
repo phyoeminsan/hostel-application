@@ -19,6 +19,7 @@ class HostelFactory extends Factory
     {
         return [
             'hostel_name' => $this->faker->word,
+            'gender' => $this->faker->randomElement(['male','female']),
             'capacity'    => $this->faker->randomElement([1, 2]),
         ];
     }

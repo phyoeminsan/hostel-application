@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\student;
 use App\Http\Requests\StudentRequest;
 use App\Http\Requests\StudentUpdateRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 
 class StudentController extends Controller
 {
@@ -95,5 +98,82 @@ class StudentController extends Controller
         $student->delete();
         return redirect()->route('backend.students.index')
                          ->with('success', 'ကျောင်းသား/သူ အချက်အလက်ကို အောင်မြင်စွာ ဖျက်ထုတ်ပြီးပါပြီ။');
+    }
+
+   public function login(Request $request)
+    {
+        // 1. roll_no နဲ့ password ကို validate လုပ်ပါ
+        $credentials = $request->validate([
+            'roll_no'  => ['required'],
+            'password' => ['required'],
+        ],
+          [
+            'roll_no.required'  => 'ကျောင်းသားနံပါတ် ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
+            'password.required' => 'လျှို့ဝှက်နံပါတ် ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
+        ]);  
+
+        // 2. Auth::guard('student') ဖြင့် roll_no + password စစ်ဆေးပြီး Login ဝင်ပါ
+        if (Auth::guard('student')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/'); // Login ဝင်ရင် Home Page ကို သွားမည်
+        }
+
+        // 3. မှားယွင်းပါက Error ပြန်ပြမည်
+        return back()->withErrors([
+            'roll_no' => 'ကျောင်းသားနံပါတ် မှားယွင်းနေပါသည်။',
+            'password' => 'လျှို့ဝှက်နံပါတ် မှားယွင်းနေပါသည်။',
+        ])->withInput($request->only('roll_no'));
+    }
+    public function logout(Request $request)
+    {
+        Auth::guard('student')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+
+    public function profile()
+    {
+        $student = Auth::guard('student')->user();
+        return view('front.students.profile', compact('student'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        /** @var \App\Models\Student $student */
+        $student = Auth::guard('student')->user();
+
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'nrc' => 'nullable|string',
+            'date_of_birth' => 'nullable|date',
+            'phone_no' => 'nullable|string|max:20',
+            'address'  => 'nullable|string',
+            'profile'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'email' => 'required|email|unique:students,email,' . $student->student_id . ',student_id',
+            'password' =>   'nullable|string|min:6',
+        ]);
+
+        if ($request->hasFile('profile')) {
+            $file_name = time() . '.' . $request->profile->extension();
+            $request->profile->move(public_path('images/profiles/'), $file_name);
+            $student->profile = '/images/profiles/' . $file_name;
+        }
+
+        $student->name     = $request->name;
+        $student->nrc = $request->nrc;
+        $student->date_of_birth = $request->date_of_birth;
+        $student->phone_no = $request->phone_no;
+        $student->address  = $request->address;
+        $student->email = $request->filled('email') ? $request->email : $student->email;
+
+        if($request->filled('password')){
+            $student->password = Hash::make($request->password);
+        }
+        
+        $student->save();
+
+        return back()->with('success', 'သင့်၏ အချက်အလက်များကို အောင်မြင်စွာ ပြင်ဆင်ပြီးပါပြီ။');
     }
 }

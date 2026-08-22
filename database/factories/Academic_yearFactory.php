@@ -26,7 +26,7 @@ class Academic_yearFactory extends Factory
                 '2024-2025',
                 '2025-2026',
             ]),
-            'status' => $this->faker->randomElement(['New','Old']),
+            'status' => $this->faker->randomElement(['Current','Old']),
         ];
     }
 }

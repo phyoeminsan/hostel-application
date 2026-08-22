@@ -21,6 +21,6 @@ class room extends Model
     ];
 
     public function hostel(){
-        return $this->belongsTo(Hostel::class);
+        return $this->belongsTo(Hostel::class, 'hostel_id');
     }
 }

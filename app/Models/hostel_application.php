@@ -14,6 +14,7 @@ class hostel_application extends Model
     protected $fillable = [
         'record_id',
         'hostel_id',
+        'apply_date',
         'status',
     ];
 }

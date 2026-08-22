@@ -8,14 +8,35 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\FrontController::class, 'index'])->name('index');
 
-Route::group(['prefix'=>'backend','as'=>'backend.'],function(){
+Route::prefix('admin')->group(function () {
+    Route::get('/login', [App\Http\Controllers\Admin\AdminLoginController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('/login', [App\Http\Controllers\Admin\AdminLoginController::class, 'login']);
+    Route::post('/logout', [App\Http\Controllers\Admin\AdminLoginController::class, 'logout'])->name('admin.logout');
+});
+
+Route::get('/login', function () {
+    return view('auth.login'); 
+})->name('login');
+Route::post('/login', [App\Http\Controllers\Admin\StudentController::class, 'login']);
+Route::post('/student/logout', [App\Http\Controllers\Admin\StudentController::class, 'logout'])->name('student.logout');
+
+Route::middleware(['auth:student'])->group(function () {
+    Route::post('/student/logout', [App\Http\Controllers\Admin\StudentController::class, 'logout'])->name('student.logout');
+    Route::get('/student/profile', [App\Http\Controllers\Admin\StudentController::class, 'profile'])->name('student.profile');
+    Route::post('/student/profile/update', [App\Http\Controllers\Admin\StudentController::class, 'updateProfile'])->name('student.profile.update');
+});
+
+Route::group(['prefix' => 'backend','as' => 'backend.','middleware' => ['auth:admin']],function(){
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('academic_years', App\Http\Controllers\Admin\Academic_yearController::class);
     Route::resource('years', App\Http\Controllers\Admin\YearController::class);
+    Route::resource('majors', App\Http\Controllers\Admin\MajorController::class);
     Route::resource('students', App\Http\Controllers\Admin\StudentController::class);
     Route::resource('student_records', App\Http\Controllers\Admin\Student_recordController::class);
     Route::resource('hostels', App\Http\Controllers\Admin\HostelController::class);
     Route::resource('rooms', App\Http\Controllers\Admin\RoomController::class);
+
+    Route::get('hostel_applications', [App\Http\Controllers\Admin\Hostel_applicationController::class, 'hostel_applications'])->name('hostel_applications');
 });

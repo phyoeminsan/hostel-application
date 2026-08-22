@@ -16,6 +16,7 @@ class student_record extends Model
         'academic_year_id',
         'year_id',
         'student_id',
+        'major_id',
     ];
 
     public function academic_year(){
@@ -28,5 +29,9 @@ class student_record extends Model
 
     public function student(){
         return $this->belongsTo(Student::class, 'student_id');
+    }
+
+    public function major(){
+        return $this->belongsTo(Major::class, 'major_id');
     }
 }

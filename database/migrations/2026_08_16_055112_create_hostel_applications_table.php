@@ -24,6 +24,7 @@ return new class extends Migration
                   ->references('hostel_id')
                   ->on('hostels')
                   ->onDelete('cascade');
+            $table->date('apply_date');
             $table->softDeletes();
             $table->timestamps();
         });

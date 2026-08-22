@@ -19,6 +19,7 @@ class PaymentFactory extends Factory
     {
         return [
             'payment_method' => $this->faker->randomElement(['Kpay','WavePay']),
+            'amount' => $this->faker->numberBetween(20000,30000),
             'payment_slip' => $this->faker->imageUrl,
             'transaction_no' => $this->faker->unique()->numberBetween(100000, 999999),
             'payment_date' => date('Y-m-d'),

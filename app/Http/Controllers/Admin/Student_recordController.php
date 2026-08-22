@@ -8,6 +8,7 @@ use App\Models\student_record;
 use App\Models\academic_year;
 use App\Models\year;
 use App\Models\student;
+use App\Models\major;
 use App\Http\Requests\Student_recordRequest;
 use App\Http\Requests\Student_recordUpdateRequest;
 
@@ -16,9 +17,16 @@ class Student_recordController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $student_records = Student_record::orderBy('record_id', 'ASC')->paginate(10);
+        $student_records = Student_record::orderBy('record_id', 'ASC');
+
+         if($request->has('year_id') && $request->year_id!=''){
+            $student_records->where('year_id', $request->year_id);
+        }
+
+        $student_records = $student_records->paginate(10);
+
         return view('admin.student_records.index', compact('student_records'));
     }
 
@@ -30,7 +38,8 @@ class Student_recordController extends Controller
         $academic_years = Academic_year::all();
         $years = Year::all();
         $students = Student::all();
-        return view('admin.student_records.create', compact('academic_years','years','students'));
+        $majors = Major::all();
+        return view('admin.student_records.create', compact('academic_years','years','students','majors'));
     }
 
     /**
@@ -41,7 +50,7 @@ class Student_recordController extends Controller
         // dd($request);
         $student_records = Student_record::create($request->all());
         $student_records->save();
-        return redirect()->route('backend.student_records.index')
+        return redirect()->route('backend.student_records.index', ['year_id' => $request->year_id])
                          ->with('success', 'ကျောင်းသား မှတ်တမ်းကို အောင်မြင်စွာ ထည့်သွင်းပြီးပါပြီ။');
     }
 
@@ -62,7 +71,8 @@ class Student_recordController extends Controller
         $academic_years = Academic_year::all();
         $years = Year::all();
         $students = Student::all();
-        return view('admin.student_records.edit', compact('student_record','academic_years','years','students'));
+        $majors = Major::all();
+        return view('admin.student_records.edit', compact('student_record','academic_years','years','students','majors'));
     }
 
     /**
@@ -73,7 +83,7 @@ class Student_recordController extends Controller
         $student_record = Student_record::find($id);
         $student_record->update($request->all());
         $student_record->save();
-        return redirect()->route('backend.student_records.index')
+        return redirect()->route('backend.student_records.index', ['year_id' => $request->year_id])
                          ->with('success', 'ကျောင်းသား မှတ်တမ်းကို အောင်မြင်စွာ ပြင်ဆင်ပြီးပါပြီ။');
     }
 

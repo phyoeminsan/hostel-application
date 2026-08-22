@@ -22,7 +22,7 @@ class RoomFactory extends Factory
             'floor_no' => $this->faker->randomElement(['1st', '2rd']),
             'no_of_person' => $this->faker->randomElement([1, 2]),
             'status' => $this->faker->randomElement(['Available', 'Full']),
-            'hostel_id' => rand(1,10),
+            'hostel_id' => rand(1,3),
         ];
     }
 }

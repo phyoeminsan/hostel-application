@@ -38,7 +38,7 @@
                         <td>{{ $i++ }}</td>
                         <td>{{ $academic_year->academic_year }}</td>
                         <td>
-                            @if ($academic_year->status == 'New')
+                            @if ($academic_year->status == 'Current')
                                 <span class="badge bg-success">{{ $academic_year->status }}</span>
                             @else
                                 <span class="badge bg-secondary">{{ $academic_year->status }}</span>

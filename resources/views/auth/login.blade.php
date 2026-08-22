@@ -1,62 +1,66 @@
-@extends('layouts.app')
+@extends('layouts.front')
 
 @section('content')
-<div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5 col-lg-4">
-                <div class="card border-0 shadow-sm rounded-4">
-                    <div class="card-body p-4 p-sm-5">
-                        
-                        <!-- Header -->
-                        <div class="text-center mb-4">
-                            <div class="bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 50px; height: 50px;">
-                                <i class="bi bi-box-arrow-in-right fs-4"></i>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<div class="container py-5 d-flex align-items-center min-vh-100">
+    <div class="row justify-content-center w-100">
+        <div class="col-lg-10 col-xl-9">
+            <div class="card border-0 shadow-lg rounded-5 overflow-hidden">
+                <div class="row g-0">
+                    
+                    <!-- Left Side: Image -->
+                    <div class="col-md-6 d-none d-md-flex align-items-center justify-content-center p-0 position-relative" style="background-color: #0f172a;">
+                        <img src="{{ asset('front-assets/images/F.jpg') }}" alt="Hostel Image" class="w-100 h-100" style="object-fit: cover; opacity: 0.85;">
+                    </div>
+
+                    <!-- Right Side: Login Form -->
+                    <div class="col-md-6 bg-white p-4 p-sm-5 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="text-center mb-4">
+                               <h2 class="fw-bold mb-1" style="color: #0f172a;">STUDENT LOGIN</h2>
+                                <p class="text-muted small">အဆောင်လျှောက်လွှာနှင့် အချက်အလက်များကို ကြည့်ရှုရန် ဝင်ရောက်ပါ</p>
                             </div>
-                            <h4 class="fw-bold text-dark mb-1">Welcome Back</h4>
-                            <p class="text-muted small">Log in to your account</p>
+
+                            <form action="{{ route('login') }}" method="POST">
+                                @csrf
+                                
+                                <!-- Email Label & Input -->
+                                <div class="mb-3">
+                                    <label for="roll_no" class="form-label small fw-semibold text-dark">Student Number</label>
+                                    <input type="text" name="roll_no" id="roll_no" class="form-control form-control-lg rounded-4 fs-6 bg-light border-0 px-3 py-3" placeholder="Enter student number">
+                                    @error('roll_no')
+                                        <span class="text-danger small ms-1">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Password Label & Input with Eye Toggle -->
+                                <div class="mb-2">
+                                    <label for="password" class="form-label small fw-semibold text-dark">Password</label>
+                                    <div class="position-relative">
+                                        <input type="password" name="password" id="password" class="form-control form-control-lg rounded-4 fs-6 bg-light border-0 px-3 py-3 pe-5" placeholder="Password">
+                                        
+                                        <button type="button" id="togglePassword" class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-decoration-none pe-3 text-dark" style="z-index: 10;">
+                                            <i class="bi bi-eye-slash-fill fs-5" id="eyeIcon"></i>
+                                        </button>
+
+                                        @error('password')
+                                            <span class="text-danger small ms-1">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="text-end mb-4">
+                                    <a href="{{ route('password.request') }}" class="small text-muted text-decoration-none">Recovery Password</a>
+                                </div>
+
+                                <button type="submit" class="btn text-white w-100 py-3 rounded-4 fw-bold shadow-sm" style="background-color: #147fe2; border: none;">
+                                    Sign In
+                                </button>
+                            </form>
                         </div>
 
-                        <!-- Form -->
-                        <form action="{{ route('login') }}" method="POST">
-                            @csrf
-                            
-                            <!-- Email -->
-                            <div class="mb-3">
-                                <label for="email" class="form-label small font-medium">Email Address</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light text-secondary border-end-0"><i class="bi bi-envelope"></i></span>
-                                    <input type="email" name="email" id="email" class="form-control border-start-0" placeholder="name@example.com" required>
-                                </div>
-                            </div>
-
-                            <!-- Password -->
-                            <div class="mb-3">
-                                <label for="password" class="form-label small font-medium">Password</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light text-secondary border-end-0"><i class="bi bi-lock"></i></span>
-                                    <input type="password" name="password" id="password" class="form-control border-start-0" placeholder="••••••••" required>
-                                </div>
-                            </div>
-
-                            <!-- Remember Me -->
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div class="form-check">
-                                    <input type="checkbox" name="remember" class="form-check-input" id="remember">
-                                    <label class="form-check-label small text-secondary" for="remember">Remember me</label>
-                                </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary w-100 py-2 rounded-3 fw-medium">
-                                Log In
-                            </button>
-                        </form>
-
-                        <!-- Footer Link -->
-                        <div class="text-center mt-4">
-                            <p class="small text-secondary mb-0">Don't have an account? 
-                                <a href="/register" class="text-primary text-decoration-none fw-bold">Register</a>
-                            </p>
+                        <div class="mt-4 text-center">
+                            <small class="text-muted">&copy; {{ date('Y') }} UniLodge Hostel System</small>
                         </div>
 
                     </div>
@@ -64,4 +68,26 @@
             </div>
         </div>
     </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+        const eyeIcon = document.querySelector('#eyeIcon');
+
+        togglePassword.addEventListener('click', function () {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            if (type === 'text') {
+                eyeIcon.classList.remove('bi-eye-slash-fill');
+                eyeIcon.classList.add('bi-eye-fill');
+            } else {
+                eyeIcon.classList.remove('bi-eye-fill');
+                eyeIcon.classList.add('bi-eye-slash-fill');
+            }
+        });
+    });
+</script>
 @endsection

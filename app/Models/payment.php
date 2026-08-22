@@ -13,6 +13,7 @@ class payment extends Model
     protected $table = 'payments';
     protected $fillable = [
         'payment_method',
+        'amount',
         'payment_slip',
         'transaction_no',
         'payment_date',

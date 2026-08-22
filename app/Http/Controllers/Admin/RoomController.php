@@ -14,9 +14,16 @@ class RoomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $rooms = Room::orderBy('room_id', 'ASC')->paginate(10);
+        $rooms = Room::orderBy('hostel_id','ASC');
+
+        if($request->has('hostel_id') && $request->hostel_id!=''){
+            $rooms->where('hostel_id', $request->hostel_id);
+        }
+
+        $rooms = $rooms->paginate(10);
+
         return view('admin.rooms.index', compact('rooms'));
     }
 
@@ -37,7 +44,7 @@ class RoomController extends Controller
         // dd($request);
         $rooms = Room::create($request->all());
         $rooms->save();
-        return redirect()->route('backend.rooms.index')
+        return redirect()->route('backend.rooms.index', ['hostel_id' => $request->hostel_id])
                          ->with('success', 'အခန်း အချက်အလက်ကို အောင်မြင်စွာ ထည့်သွင်းပြီးပါပြီ။');
     }
 
@@ -67,18 +74,18 @@ class RoomController extends Controller
         $room = Room::find($id);
         $room->update($request->all());
         $room->save();
-        return redirect()->route('backend.rooms.index')
+        return redirect()->route('backend.rooms.index', ['hostel_id' => $request->hostel_id])
                          ->with('success', 'အခန်း အချက်အလက်ကို အောင်မြင်စွာ ပြင်ဆင်ပြီးပါပြီ။');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request,string $id)
     {
         $room = Room::find($id);
         $room->delete();
-        return redirect()->route('backend.rooms.index')
+        return redirect()->route('backend.rooms.index', ['hostel_id' => $request->hostel_id])
                          ->with('success', 'အခန်း အချက်အလက်ကို အောင်မြင်စွာ ဖျက်ထုတ်ပြီးပါပြီ။');
     }
 }

@@ -14,6 +14,9 @@ use App\Models\hostel_allocation;
 use App\Models\room;
 use App\Models\hostel_application;
 use App\Models\Payment;
+use App\Models\major;
+use App\Models\Admin;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,13 +33,19 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         Academic_year::factory(10)->create();
-        Year::factory(10)->create();
+        Year::factory(5)->create();
+        Major::factory(3)->create();
         Student::factory(10)->create();
-        Hostel::factory(10)->create();
-        Room::factory(10)->create();
+        Hostel::factory(3)->create();
+        Room::factory(20)->create();
         Student_record::factory(10)->create();
         Hostel_application::factory(10)->create();
         Payment::factory(10)->create();
         Hostel_allocation::factory(10)->create();
+
+        Admin::create([
+            'email' => 'admin@gamil.com',
+            'password' => Hash::make('12345678'), 
+        ]);
     }
 }
