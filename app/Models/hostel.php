@@ -14,6 +14,7 @@ class hostel extends Model
     protected $primaryKey = 'hostel_id';
     protected $fillable = [
         'hostel_name',
+        'image',
         'gender',
         'capacity',
     ];

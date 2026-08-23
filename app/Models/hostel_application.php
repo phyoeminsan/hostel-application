@@ -16,5 +16,20 @@ class hostel_application extends Model
         'hostel_id',
         'apply_date',
         'status',
+        'reason',
     ];
+
+    public function student_record()
+    {
+        return $this->belongsTo(Student_record::class, 'record_id');
+    }
+
+    public function student(){
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+
+    public function hostel()
+    {
+        return $this->belongsTo(Hostel::class, 'hostel_id');
+    }
 }

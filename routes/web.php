@@ -1,14 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
+use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\FrontController::class, 'index'])->name('index');
+
+Route::get('/hostels', [App\Http\Controllers\FrontController::class, 'hostels'])->name('hostels');
+
+Route::get('/hostels/{id}/apply', [App\Http\Controllers\FrontController::class, 'showApplyForm'])->name('hostel.apply');
+
+Route::post('/hostels/apply/store', [App\Http\Controllers\FrontController::class, 'storeApplication'])->name('hostels.apply.store');
 
 Route::prefix('admin')->group(function () {
     Route::get('/login', [App\Http\Controllers\Admin\AdminLoginController::class, 'showLoginForm'])->name('admin.login');

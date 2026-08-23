@@ -22,6 +22,7 @@ class Hostel_applicationFactory extends Factory
             'hostel_id' => rand(1,3),
             'apply_date' => $this->faker->date(),
             'status' => $this->faker->randomElement(['pending','approved','rejected']),
+            'reason' => $this->faker->word,
         ];
     }
 }

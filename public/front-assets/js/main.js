@@ -1,28 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const appModal = new bootstrap.Modal(document.getElementById('applicationModal'));
+    const appModalElement = document.getElementById('applicationModal');
+    if (!appModalElement) return; // Modal မရှိပါက Script ဆက်မလုပ်ဆောင်စေရန်
+
+    const appModal = new bootstrap.Modal(appModalElement);
     const applyButtons = document.querySelectorAll('.btn-apply');
     const modalTitle = document.getElementById('modalHostelTitle');
     const selectedHostelInput = document.getElementById('selectedHostelID');
 
     applyButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const hostelID = e.target.getAttribute('data-hostel-id');
-            const hostelName = e.target.getAttribute('data-hostel-name');
+            const hostelID = e.currentTarget.getAttribute('data-hostel-id');
+            const hostelName = e.currentTarget.getAttribute('data-hostel-name');
 
-            selectedHostelInput.value = hostelID;
-            modalTitle.innerText = `Apply for ${hostelName}`;
+            if (selectedHostelInput) selectedHostelInput.value = hostelID;
+            if (modalTitle) modalTitle.innerText = `Apply for ${hostelName}`;
+            
             appModal.show();
         });
     });
 
+    // Form submit ပြုလုပ်ချိန်တွင် e.preventDefault() ကို ဖယ်ရှားပြီး Controller သို့ ပို့ဆောင်မည်
     const appForm = document.getElementById('hostelAppForm');
-    appForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        alert('အဆောင်လျှောက်လွှာ အောင်မြင်စွာ တင်သွင်းပြီးပါပြီ။ Admin မှ Approved လုပ်သည်အထိ စောင့်ဆိုင်းပေးပါ။ (Status: Pending)');
-        
-        appModal.hide();
-        appForm.reset();
-    });
-
+    if (appForm) {
+        appForm.addEventListener('submit', function () {
+            // Submit ခလုတ်ကို နှစ်ခါ မနှိပ်နိုင်စေရန် Disable လုပ်ခြင်း
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Submitting...';
+            }
+        });
+    }
 });

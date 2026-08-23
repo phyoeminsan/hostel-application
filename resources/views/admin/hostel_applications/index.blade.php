@@ -16,6 +16,7 @@
                     <th>HosteID</th>
                     <th>Apply Date</th>
                     <th>Status</th>
+                    <th>Reason</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
@@ -26,8 +27,8 @@
                 @foreach ($hostel_applications as $hostel_application)
                     <tr>
                         <td>{{ $i++ }}</td>
-                        <td>{{ $hostel_application->record_id }}</td>
-                        <td>{{ $hostel_application->hostel_id }}</td>
+                        <td>{{ $hostel_application->student_record->student->name }}</td>
+                        <td>{{ $hostel_application->hostel->hostel_name }}</td>
                         <td>{{ $hostel_application->apply_date }}</td>
                         <td>
                             @if ($hostel_application->status == 'approved')
@@ -38,6 +39,7 @@
                                 <span class="badge bg-danger">{{ $hostel_application->status }}</span>
                             @endif
                         </td>
+                        <td>{{ $hostel_application->reason }}</td>
                         <td class="text-end">
                             <a href="#" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-edit"></i></a>
                             <button class="btn btn-sm btn-outline-danger delete" data-id="#"><i class="fa-solid fa-trash"></i></button>

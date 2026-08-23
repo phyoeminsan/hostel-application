@@ -27,10 +27,26 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             background: #ffffff;
+            position: relative;
+        }
+        /* Back Button Style */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #6c757d;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-back:hover {
+            color: #083372;
+            transform: translateX(-3px);
         }
         /* Left Section Style */
         .login-section {
-            padding: 50px;
+            padding: 40px 50px;
         }
         .brand-title {
             font-size: 2.2rem;
@@ -48,12 +64,8 @@
             background-color: #ffffff;
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
         }
-        .input-group-text {
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-        }
-        .btn-login {
-            background-color: #111827;
+        .btn-primary {
+            background-color: #2a5ecf;
             border: none;
             border-radius: 12px;
             padding: 12px;
@@ -61,36 +73,17 @@
             color: #ffffff;
             transition: all 0.3s ease;
         }
-        .btn-login:hover {
-            background-color: #1f2937;
+        .btn-primary:hover {
+            background-color: #06295a;
             color: #ffffff;
         }
         /* Right Section Style */
-       .gradient-section {
-            background-image: url('/front-assets/images/Faculty.jpg'); /* မိမိပုံ Path သို့ ပြောင်းပါ */
+        .gradient-section {
+            background-image: url('{{ asset("front-assets/images/Faculty.jpg") }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             min-height: 100%;
-        }
-        .top-nav .btn-join {
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 20px;
-            color: #ffffff;
-            padding: 6px 18px;
-            font-size: 0.875rem;
-        }
-        .top-nav .btn-join:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-        }
-        .hero-title {
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-        .toggle-password {
-            cursor: pointer;
         }
     </style>
 </head>
@@ -101,9 +94,16 @@
             <!-- Left Side: Login Form -->
             <div class="col-lg-6 login-section d-flex flex-column justify-content-between">
                 <div>
-                    <div class="my-4">
+                    <!-- Back Button Inside Layout -->
+                    <div class="mb-3">
+                        <a href="{{ route('index') }}" class="btn-back">
+                            <i class="bi bi-arrow-left fs-5"></i> Back to Home
+                        </a>
+                    </div>
+
+                    <div class="my-3 text-center">
                         <h1 class="brand-title mb-1">ADMIN</h1>
-                        <p class="text-muted small">Welcome back to the Student Hostel Portal</p>
+                        <p class="text-muted small">Welcome back to the Student Hostel Management System</p>
                     </div>
 
                     <form action="{{ route('admin.login') }}" method="POST">
@@ -112,29 +112,27 @@
                         <!-- Email / Username Field -->
                         <div class="mb-3">
                             <label class="form-label small text-muted fw-semibold">Email or Username</label>
-                            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
+                            <input type="email" name="email" class="form-control" 
                             value="{{ old('email') }}" placeholder="Enter your email">
                             @error('email')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                <span class="text-danger small ms-1">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <!-- Password Field -->
-                        <div class="mb-3">
-                            <label class="form-label small text-muted fw-semibold">Password</label>
-                            <div class="input-group">
-                                <input type="password" name="password" id="passwordInput" class="form-control @error('password') is-invalid @enderror" placeholder="••••••••">
-                                <span class="input-group-text bg-light text-muted toggle-password" id="togglePassword">
-                                    <i class="bi bi-eye-slash" id="toggleIcon"></i>
-                                </span>
-                                @error('password')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                        <div class="mb-2">
+                            <label for="password" class="form-label small fw-semibold text-dark">Password</label>
+                            <div class="position-relative">
+                                <input type="password" name="password" id="password" class="form-control px-3 py-2 pe-5" placeholder="Password">
+                                
+                                <button type="button" id="togglePassword" class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-decoration-none pe-3 text-dark" style="z-index: 10;">
+                                    <i class="bi bi-eye-slash-fill fs-5" id="eyeIcon"></i>
+                                </button>
                             </div>
+
+                            @error('password')
+                                <span class="text-danger small ms-1">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Forgot Password & Remember -->
@@ -150,13 +148,13 @@
 
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary w-100">
-                            <i class="bi bi-box-arrow-in-right me-1"></i>Sign In
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
                         </button>
                     </form>
                 </div>
 
                 <div class="mt-4 text-center">
-                    <small class="text-muted">Students Hostel Management System &copy; 2026</small>
+                    <small class="text-muted">Students Hostel Management System &copy; {{ date('Y') }}</small>
                 </div>
             </div>
 
@@ -178,6 +176,7 @@
             });
         </script>
     @endif
+    
     @if ($errors->has('auth_failed'))
         <script>
             Swal.fire({
@@ -192,19 +191,23 @@
 
     <!-- Password Toggle Script -->
     <script>
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const passwordInput = document.getElementById('passwordInput');
-            const toggleIcon = document.getElementById('toggleIcon');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('bi-eye-slash');
-                toggleIcon.classList.add('bi-eye');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('bi-eye');
-                toggleIcon.classList.add('bi-eye-slash');
-            }
+        document.addEventListener('DOMContentLoaded', function () {
+            const togglePassword = document.querySelector('#togglePassword');
+            const password = document.querySelector('#password');
+            const eyeIcon = document.querySelector('#eyeIcon');
+
+            togglePassword.addEventListener('click', function () {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                
+                if (type === 'text') {
+                    eyeIcon.classList.remove('bi-eye-slash-fill');
+                    eyeIcon.classList.add('bi-eye-fill');
+                } else {
+                    eyeIcon.classList.remove('bi-eye-fill');
+                    eyeIcon.classList.add('bi-eye-slash-fill');
+                }
+            });
         });
     </script>
 </body>

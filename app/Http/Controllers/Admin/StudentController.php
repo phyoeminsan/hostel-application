@@ -102,7 +102,6 @@ class StudentController extends Controller
 
    public function login(Request $request)
     {
-        // 1. roll_no နဲ့ password ကို validate လုပ်ပါ
         $credentials = $request->validate([
             'roll_no'  => ['required'],
             'password' => ['required'],
@@ -112,16 +111,13 @@ class StudentController extends Controller
             'password.required' => 'လျှို့ဝှက်နံပါတ် ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
         ]);  
 
-        // 2. Auth::guard('student') ဖြင့် roll_no + password စစ်ဆေးပြီး Login ဝင်ပါ
         if (Auth::guard('student')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/'); // Login ဝင်ရင် Home Page ကို သွားမည်
+            return redirect()->intended('/'); 
         }
-
-        // 3. မှားယွင်းပါက Error ပြန်ပြမည်
+        
         return back()->withErrors([
-            'roll_no' => 'ကျောင်းသားနံပါတ် မှားယွင်းနေပါသည်။',
-            'password' => 'လျှို့ဝှက်နံပါတ် မှားယွင်းနေပါသည်။',
+            'auth_failed' => 'သင်၏အချက်အလက် မှားယွင်းနေပါသည်။ ကျေးဇူးပြု၍ မှန်ကန်စွာ ဖြည့်သွင်းပေးပါ။',
         ])->withInput($request->only('roll_no'));
     }
     public function logout(Request $request)

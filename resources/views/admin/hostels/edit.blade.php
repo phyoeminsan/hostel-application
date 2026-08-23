@@ -35,6 +35,40 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Gender</label>
+                        <select name="gender" id="gender" class="form-select bg-light @error('gender') is-invalid @elseif(old('gender')) is-valid @enderror" value="{{ $hostel->gender }}">
+                                <option value="">Select Gender</option>
+                                <option value="Male" {{ $hostel->gender == 'Male' ? 'selected' : '' }}>Male </option>
+                                <option value="Female" {{ $hostel->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                        </select>
+                        @error('gender')
+                            <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
+                    <div class="col-12">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="image-tab" data-bs-toggle="tab" data-bs-target="#image-tab-pane" type="button" role="tab" aria-controls="image-tab-pane" aria-selected="true">Image</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="new_image-tab" data-bs-toggle="tab" data-bs-target="#new_image-tab-pane" type="button" role="tab" aria-controls="new_image-tab-pane" aria-selected="false">New Image</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="image-tab-pane" role="tabpanel" aria-labelledby="image-tab" tabindex="0">
+                                <img src="{{ $hostel->image }}" class="w-25 h-25 my-3" alt="">
+                                <input type="hidden" name="image" id="" value="{{ $hostel->image }}">
+                            </div>
+                            <div class="tab-pane fade" id="new_image-tab-pane" role="tabpanel" aria-labelledby="new_image-tab" tabindex="0">
+                                <input type="file" name="image" class="form-control my-3 @error('image') is-invalid @elseif(old('image')) is-valid
+                                @enderror" id="image" accept="jpg,jpeg,png,webp"value="{{ old('image') }}">
+                            </div>
+                        </div>    
+                        @error('image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="mt-4 text-end">
                     <a href="{{ route('backend.hostels.index') }}" class="btn btn-outline-danger me-2">မလုပ်တော့ပါ</a>
                     <button type="submit" class="btn btn-primary px-4">

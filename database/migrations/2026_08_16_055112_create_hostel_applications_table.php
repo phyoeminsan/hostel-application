@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('hostel_applications', function (Blueprint $table) {
             $table->id('application_id');
-            $table->string('status');
             $table->unsignedBigInteger('record_id');
             $table->foreign('record_id')
                   ->references('record_id')
@@ -25,6 +24,8 @@ return new class extends Migration
                   ->on('hostels')
                   ->onDelete('cascade');
             $table->date('apply_date');
+            $table->string('status');
+            $table->string('reason');
             $table->softDeletes();
             $table->timestamps();
         });

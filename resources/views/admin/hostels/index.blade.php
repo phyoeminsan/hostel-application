@@ -25,7 +25,9 @@
                 <tr>
                     <th>No</th>
                     <th>Hostel Name</th>
+                    <th>Photo</th>
                     <th>Capacity</th>
+                    <th>Gender</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
@@ -37,7 +39,9 @@
                     <tr>
                         <td>{{ $i++ }}</td>
                         <td>{{ $hostel->hostel_name }}</td>
+                        <td><img src="{{ $hostel->image }}" alt="" width="50" height="50"></td>
                         <td>{{ $hostel->capacity }}</td>
+                        <td>{{ $hostel->gender }}</td>
                         <td class="text-end">
                             <a href="{{ route('backend.hostels.edit', $hostel->hostel_id) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-edit"></i></a>
                             <button class="btn btn-sm btn-outline-danger delete" data-id="{{ $hostel->hostel_id }}"><i class="fa-solid fa-trash"></i></button>

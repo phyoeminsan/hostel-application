@@ -1,7 +1,23 @@
 @extends('layouts.front')
 
 @section('content')
+<style>
+    .btn-primary {
+        background-color: #2a5ecf;
+        border: none;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 600;
+        color: #ffffff;
+        transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+        background-color: #06295a;
+        color: #ffffff;
+    }
+</style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="container py-5 d-flex align-items-center min-vh-100">
     <div class="row justify-content-center w-100">
         <div class="col-lg-10 col-xl-9">
@@ -34,7 +50,7 @@
                                 </div>
 
                                 <!-- Password Label & Input with Eye Toggle -->
-                                <div class="mb-2">
+                                  <div class="mb-2">
                                     <label for="password" class="form-label small fw-semibold text-dark">Password</label>
                                     <div class="position-relative">
                                         <input type="password" name="password" id="password" class="form-control form-control-lg rounded-4 fs-6 bg-light border-0 px-3 py-3 pe-5" placeholder="Password">
@@ -42,18 +58,17 @@
                                         <button type="button" id="togglePassword" class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-decoration-none pe-3 text-dark" style="z-index: 10;">
                                             <i class="bi bi-eye-slash-fill fs-5" id="eyeIcon"></i>
                                         </button>
-
-                                        @error('password')
-                                            <span class="text-danger small ms-1">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    @error('password')
+                                        <span class="text-danger small ms-1">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="text-end mb-4">
                                     <a href="{{ route('password.request') }}" class="small text-muted text-decoration-none">Recovery Password</a>
                                 </div>
 
-                                <button type="submit" class="btn text-white w-100 py-3 rounded-4 fw-bold shadow-sm" style="background-color: #147fe2; border: none;">
+                                <button type="submit" class="btn btn-primary text-white w-100 py-3 rounded-4 fw-bold shadow-sm">
                                     Sign In
                                 </button>
                             </form>
@@ -68,6 +83,28 @@
             </div>
         </div>
     </div>
+@if ($errors->has('roll_no') || $errors->has('password'))
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'အချက်အလက် လိုအပ်နေပါသည်!',
+            text: 'ကျေးဇူးပြု၍ ကျောင်းသားနံပါတ် နှင့် လျှို့ဝှက်နံပါတ်ကို ဖြည့်သွင်းပေးပါ',
+            confirmButtonColor: '#f39c12',
+            confirmButtonText: 'နားလည်ပါပြီ'
+        });
+    </script>
+@endif
+@if ($errors->has('auth_failed'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'ဝင်ရောက်၍ မရပါ!',
+            text: '{{ $errors->first("auth_failed") }}',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'ပြန်လည်ကြိုးစားပါ'
+        });
+    </script>
+@endif
 </div>
 
 <script>

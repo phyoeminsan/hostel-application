@@ -1,5 +1,7 @@
 @extends('layouts.front')
 @section('content')
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    <section id="home" class="hero-section text-dark d-flex align-items-center py-5">
         <div class="container-fluid px-4 px-lg-5">
             <div class="row align-items-center">
@@ -68,119 +70,85 @@
             </div>
         </div>
     </section>
-        <!-- Hostels List Section (Hostel Table Basis) -->
-        <section id="hostels" class="py-5 bg-light">
-            <div class="container py-4">
-                <div class="text-center mb-5">
-                    <h6 class="text-primary fw-bold text-uppercase">Hostel Selection</h6>
-                    <h2 class="fw-bold">Available Student Hostels</h2>
-                    <p class="text-muted">ကျောင်းသား/သူများ လျှောက်ထားနိုင်သည့် အဆောင်များ</p>
-                </div>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="card border-0 shadow-sm h-100 hostel-card">
-                            <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=600" class="card-img-top" alt="Hostel A">
-                            <div class="card-body p-4 d-flex flex-column">
-                                <h5 class="fw-bold">Aung San Hostel (Male)</h5>
-                                <p class="text-muted small">Capacity: 300 Students</p>
-                                <div class="mt-auto">
-                                    <button class="btn btn-primary w-100 rounded-pill btn-apply" data-hostel-id="1" data-hostel-name="Aung San Hostel (Male)">Apply Hostel</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card border-0 shadow-sm h-100 hostel-card">
-                            <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=600" class="card-img-top" alt="Hostel B">
-                            <div class="card-body p-4 d-flex flex-column">
-                                <h5 class="fw-bold">Inya Hostel (Female)</h5>
-                                <p class="text-muted small">Capacity: 250 Students</p>
-                                <div class="mt-auto">
-                                    <button class="btn btn-primary w-100 rounded-pill btn-apply" data-hostel-id="2" data-hostel-name="Inya Hostel (Female)">Apply Hostel</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card border-0 shadow-sm h-100 hostel-card">
-                            <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=600" class="card-img-top" alt="Hostel C">
-                            <div class="card-body p-4 d-flex flex-column">
-                                <h5 class="fw-bold">Thiri Hostel (Female)</h5>
-                                <p class="text-muted small">Capacity: 200 Students</p>
-                                <div class="mt-auto">
-                                    <button class="btn btn-primary w-100 rounded-pill btn-apply" data-hostel-id="3" data-hostel-name="Thiri Hostel (Female)">Apply Hostel</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+     <!-- Hostels List Section (Hostel Table Basis) -->
+    <section id="hostels" class="py-5 bg-light">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h6 class="text-primary fw-bold text-uppercase">Hostel Selection</h6>
+                <h2 class="fw-bold">Available Student Hostels</h2>
+                <p class="text-muted">ကျောင်းသား/သူများ လျှောက်ထားနိုင်သည့် အဆောင်များ</p>
             </div>
-        </section>
-        <!-- Application Modal (Hostel Application Form) -->
-        <div class="modal fade" id="applicationModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content border-0 shadow">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title fw-bold" id="modalHostelTitle">Hostel Application Form</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body p-4">
-                        <form id="hostelAppForm">
-                            <input type="hidden" id="selectedHostelID" name="hostelID">
+            <div class="row g-4">
+                @foreach ($hostels as $hostel)
+                    <div class="col-md-4">
+                        @php
+                            // 1. Auth မှ Student ၏ gender (စာလုံးသေး) ကို ယူပါ
+                            $studentGender = Auth::guard('student')->user()->gender ?? Auth::user()->gender ?? null;
                             
-                            <div class="row g-3">
-                                <!-- Student Academic Info -->
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">Academic Year</label>
-                                    <select class="form-select" required>
-                                        <option value="1">2025-2026 (Current)</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">Year</label>
-                                    <select class="form-select" required>
-                                        <option value="">Select Year...</option>
-                                        <option value="1">First Year</option>
-                                        <option value="2">Second Year</option>
-                                        <option value="3">Third Year</option>
-                                        <option value="4">Final Year</option>
-                                    </select>
-                                </div>
+                            // 2. Hostel ၏ gender (စာလုံးသေး) ကို ယူပါ
+                            $hostelGender = $hostel->gender ?? null;
 
-                                <!-- Student Personal Info -->
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">Roll No</label>
-                                    <input type="text" class="form-control" placeholder="e.g., 5CS-10" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">Student Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter Full Name" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">NRC</label>
-                                    <input type="text" class="form-control" placeholder="12/XXX(N)000000" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">Phone</label>
-                                    <input type="tel" class="form-control" placeholder="09xxxxxxxxx" required>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label fw-bold">Reason for Application</label>
-                                    <textarea class="form-control" rows="2" placeholder="Why do you need hostel accommodation?"></textarea>
+                            // 3. Gender Mismatch ဖြစ်မဖြစ် စစ်ဆေးခြင်း
+                            $isGenderMismatch = false;
+                            
+                            if ($studentGender && $hostelGender && strtolower($hostelGender) !== 'all') {
+                                if (strtolower(trim($studentGender)) !== strtolower(trim($hostelGender))) {
+                                    $isGenderMismatch = true;
+                                }
+                            }
+                        @endphp
+                        <div class="card border-0 shadow-sm h-100 hostel-card">
+                            <img src="{{ $hostel->image }}" class="card-img-top" alt="Hostel A">
+                            <div class="card-body p-4 d-flex flex-column">
+                                <h5 class="fw-bold">{{ $hostel->hostel_name }}</h5>
+                                <p class="text-muted small">Gender: {{ $hostel->gender }} </p>
+                                <p class="text-muted small">Capacity: {{ $hostel->capacity }} Students</p>
+                                <div class="mt-auto">
+                                    @if (!Auth::guard('student')->check())
+                                        <!-- Login မဝင်ထားလျှင် Login Page သို့ ခေါ်သွားမည် သို့မဟုတ် Warning Alert ပြမည် -->
+                                        <a href="/login" class="btn btn-secondary w-100 rounded-pill" onclick="return confirm('အဆောင်လျှောက်ထားရန် ဦးစွာ Login ဝင်ပေးပါ၊');">
+                                            Apply Hostel
+                                        </a>
+                                    @elseif ($isGenderMismatch)
+                                        <!-- Gender မတူလျှင် -->
+                                        <a href="{{ route('hostel.apply', $hostel->hostel_id) }}" class="btn btn-danger w-100 rounded-pill">
+                                            Not Allowed ({{ $hostel->gender }} Only)
+                                        </a>
+                                    @else
+                                        <!-- Login ဝင်ထားပြီး Gender ပါ တူလျှင် -->
+                                        <a href="{{ route('hostel.apply', $hostel->hostel_id) }}" class="btn btn-primary w-100 rounded-pill btn-apply">
+                                            Apply Hostel
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
-
-                            <div class="alert alert-info mt-3 mb-0 fs-7">
-                                <i class="bi bi-info-circle me-1"></i> လျှောက်လွှာ တင်သွင်းပြီးပါက Status မှာ <strong>Pending</strong> ဖြစ်မည်ဖြစ်ပြီး Admin မှ အတည်ပြုပြီးမှသာ Room & Payment ဆက်လက်လုပ်ဆောင်ရပါမည်။
-                            </div>
-
-                            <div class="mt-4 text-end">
-                                <button type="button" class="btn btn-light rounded-pill px-4 me-2" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary rounded-pill px-4">Submit Application</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
+    </section>
+        @if(session('error'))
+            <script>
+                Swal.fire({
+                        icon: 'error',
+                        title: 'ရွှေးချယ်၍ မရနိုင်ပါ!',
+                        text: "{{ session('error') }}",
+                        confirmButtonColor: '#dc3545',
+                        confirmButtonText: 'နားလည်ပါပြီ'
+                    });
+            </script>
+        @endif
+        @if(session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'အောင်မြင်ပါသည်',
+                    text: "{{ session('success') }}",
+                    confirmButtonColor: '#0d6efd',
+                    confirmButtonText: 'နားလည်ပါပြီ' 
+                });
+            </script>
+        @endif
 @endsection

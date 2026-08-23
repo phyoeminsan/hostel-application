@@ -46,6 +46,25 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Gender</label>
+                        <select name="gender" id="gender" class="form-select bg-light @error('gender') is-invalid @elseif(old('gender')) is-valid @enderror" value="{{ old('gender') }}">
+                                <option value="">Select Gender</option>
+                                <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male </option>
+                                <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                        </select>
+                        @error('gender')
+                            <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Photo</label>
+                        <input type="file" name="image" class="form-control @error('image') is-invalid @elseif(old('image')) is-valid
+                        @enderror" id="image" value="{{ old('image') }}">
+                        @error('image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="mt-4 text-end">
                         <a href="{{ route('backend.hostels.index') }}" class="btn btn-outline-danger me-2">မလုပ်တော့ပါ</a>
                         <button type="submit" class="btn btn-primary px-4">

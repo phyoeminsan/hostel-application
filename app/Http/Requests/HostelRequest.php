@@ -24,7 +24,9 @@ class HostelRequest extends FormRequest
     {
         return [
             'hostel_name' => 'required',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'capacity' => 'required',
+            'gender' => 'required',
         ];
     }
 }

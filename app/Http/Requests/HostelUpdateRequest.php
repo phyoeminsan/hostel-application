@@ -25,6 +25,7 @@ class HostelUpdateRequest extends FormRequest
         return [
             'hostel_name' => 'required',
             'capacity' => 'required',
+            'gender' => 'required',
         ];
     }
 }

@@ -34,6 +34,14 @@ class HostelController extends Controller
     {
         // dd($request);
         $hostels = Hostel::create($request->all());
+        if ($request->hasFile('image')) {
+            $file_name = time() . '.' . $request->image->extension();
+            $upload = $request->image->move(public_path('images/hostels/'), $file_name);
+            
+            if ($upload) {
+                $hostels->image = '/images/hostels/' . $file_name;
+            }
+        }
         $hostels->save();
         return redirect()->route('backend.hostels.index')
                  ->with('success', 'အဆောင် အချက်အလက်ကို အောင်မြင်စွာ ထည့်သွင်းပြီးပါပြီ။');
@@ -63,6 +71,15 @@ class HostelController extends Controller
     {
         $hostel = Hostel::find($id);
         $hostel->update($request->all());
+
+         //file upload
+        if($request->hasFile('image')){
+            $file_name = time().'.'.$request->image->extension();
+            $upload = $request->image->move(public_path('images/hostels/'),$file_name);
+            if($upload){
+                $hostel->image = '/images/hostels/'.$file_name;
+            }
+        } 
         $hostel->save();
         return redirect()->route('backend.hostels.index')
                          ->with('success', 'အဆောင် အချက်အလက်ကို အောင်မြင်စွာ ပြင်ဆင်ပြီးပါပြီ။');
