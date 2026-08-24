@@ -17,6 +17,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/login', [App\Http\Controllers\Admin\AdminLoginController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [App\Http\Controllers\Admin\AdminLoginController::class, 'login']);
     Route::post('/logout', [App\Http\Controllers\Admin\AdminLoginController::class, 'logout'])->name('admin.logout');
+
 });
 
 Route::get('/login', function () {
@@ -42,4 +43,7 @@ Route::group(['prefix' => 'backend','as' => 'backend.','middleware' => ['auth:ad
     Route::resource('rooms', App\Http\Controllers\Admin\RoomController::class);
 
     Route::get('hostel_applications', [App\Http\Controllers\Admin\Hostel_applicationController::class, 'hostel_applications'])->name('hostel_applications');
+
+    Route::post('hostel_applications/{id}/approved', [App\Http\Controllers\Admin\Hostel_applicationController::class, 'approved'])->name('hostel_applications.approved');
+    Route::post('hostel_applications/{id}/rejected', [App\Http\Controllers\Admin\Hostel_applicationController::class, 'rejected'])->name('hostel_applications.rejected');
 });

@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id('student_id');
             $table->string('roll_no')->unique(); // UCSPL-001
             $table->string('name');
+             $table->unsignedBigInteger('major_id');
+            $table->foreign('major_id')
+                  ->references('major_id')
+                  ->on('majors')
+                  ->onDelete('cascade');
             $table->string('gender');
             $table->string('nrc');
             $table->date('date_of_birth')->nullable();

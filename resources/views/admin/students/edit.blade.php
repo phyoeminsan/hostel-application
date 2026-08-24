@@ -36,6 +36,18 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label fw-bold">Majors</label>
+                        <select name="major_id" id="major_id" class="form-select bg-light @error('major_id') is-invalid @elseif(old('student_id')) is-valid @enderror">
+                            <option value="">Select Majors</option>
+                            @foreach($majors as $major)
+                                <option value="{{ $major->major_id }}" {{ $student->major_id == $major->major_id? 'selected' : '' }}>{{ $major->major_name }}</option>
+                            @endforeach
+                        </select>
+                        @error('major_id')
+                            <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label fw-bold">Gender</label>
                         <select name="gender" id="gender" class="form-select bg-light @error('gender') is-invalid @elseif(old('gender')) is-valid @enderror" value="{{ $student->gender }}">
                                 <option value="">Select Gender</option>
@@ -86,7 +98,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-12">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold">Address</label>
                         <input type="text" name="address" class="form-control @error('address') is-invalid @elseif(old('address')) is-valid
                         @enderror" id="address" value="{{ $student->address }}">

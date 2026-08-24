@@ -25,6 +25,7 @@ class StudentUpdateRequest extends FormRequest
         return [
             'roll_no' => 'required',
             'name' => 'required',
+            'major_id' => 'required',
             'gender' => 'required',
             'nrc' => 'required',
             'date_of_birth' => 'required',

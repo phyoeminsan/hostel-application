@@ -40,24 +40,77 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#hostels"> Hostels</a>
                     </li>
-                       <li class="nav-item dropdown">
-                        <button class="btn btn-light position-relative rounded-circle p-2 ms-md-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-bell fs-5"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </button>
+                    <li class="nav-item dropdown">
+                        <a class="btn btn-light position-relative rounded-circle p-2 ms-md-1" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-bell fs-5 text-secondary"></i>
+                            @if(isset($userNotification))
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                            @endif
+                        </a>
+                        <!-- Notification Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2" style="width: 320px;">
+                            <!-- Header -->
+                            <li class="px-3 py-2 border-bottom">
+                                <h6 class="fw-bold mb-2 text-dark">အကြောင်းကြားစာများ</h6>
+                            </li>
 
-                        <ul class="dropdown-menu dropdown-menu-end p-2 shadow-sm" style="width: 280px;">
-                            <li class="dropdown-header fw-bold">အကြောင်းကြားစာများ</li>
-                            <li><hr class="dropdown-divider"></li>
+                            <!-- Body -->
                             <li>
-                                <a class="dropdown-item small text-wrap rounded py-2" href="#applicationModal">
-                                    <span class="fw-bold d-block text-primary">Admin Response</span>
-                                    သင်လျှောက်ထားသော Hostel Form ကို Admin မှ လက်ခံအတည်ပြုလိုက်ပါသည်။
-                                </a>
+                                @if(isset($userNotification))
+                                    <div class="px-3 py-3 dropdown-item-text transition-all">
+                                        <!-- Title & Badge -->
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-bold text-primary" style="font-size: 0.9rem;">Hostel Application Status</span>
+                                            
+                                            @if($userNotification->status == 'pending')
+                                                <span class="badge rounded-pill bg-warning text-dark px-2 py-1" style="font-size: 0.7rem;">Pending</span>
+                                            @elseif($userNotification->status == 'approved')
+                                                <span class="badge rounded-pill bg-success px-2 py-1" style="font-size: 0.7rem;">Approved</span>
+                                            @elseif($userNotification->status == 'rejected')
+                                                <span class="badge rounded-pill bg-danger px-2 py-1" style="font-size: 0.7rem;">Rejected</span>
+                                            @endif
+                                        </div>
+                                        
+                                        <!-- Message -->
+                                        @if($userNotification->status == 'pending')
+                                            <p class="text-muted mb-0 mt-1" style="font-size: 0.85rem; line-height: 1.6;">
+                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> Form ကို Admin မှ စစ်ဆေးနေဆဲ ဖြစ်ပါသည်။
+                                            </p>
+                                        @elseif($userNotification->status == 'approved')
+                                            <p class="text-muted mb-1 mt-1" style="font-size: 0.85rem; line-height: 1.6;">
+                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> Form ကို Admin မှ <span class="text-success fw-medium">လက်ခံအတည်ပြု</span> လိုက်ပါသည်။
+                                            </p>
+                                            <div class="mt-2">
+                                                <a href="#" class="btn btn-sm btn-outline-success w-100 fw-bold">
+                                                    <i class="bi bi-credit-card"></i> Payment ပြုလုပ်ရန် ဤနေရာကို နှိပ်ပါ
+                                                </a>
+                                            </div>
+                                        @elseif($userNotification->status == 'rejected')
+                                            <p class="text-muted mb-1 mt-1" style="font-size: 0.85rem; line-height: 1.6;">
+                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> Form ကို <span class="text-danger fw-medium">ငြင်းပယ်</span> လိုက်ပါသည်။
+                                            </p>
+                                            @if($userNotification->reason)
+                                                <p class="text-dark small bg-light p-2 rounded border mb-0">
+                                                    <strong>Reason:</strong> {{ $userNotification->reason }}
+                                                </p>
+                                            @endif
+                                        @endif
+                                        
+                                        <!-- Timestamp (Optional) -->
+                                        <small class="text-black-50 mt-2 d-block" style="font-size: 0.7rem;">
+                                            <i class="bi bi-clock me-1"></i> {{ $userNotification->created_at->diffForHumans() ?? 'Just now' }}
+                                        </small>
+                                    </div>
+                                @else
+                                    <!-- Empty State -->
+                                    <div class="px-3 py-4 text-center">
+                                        <i class="bi bi-bell-slash text-muted fs-3 mb-2 d-block"></i>
+                                        <p class="text-muted small mb-0">အကြောင်းကြားစာ မရှိသေးပါ။</p>
+                                    </div>
+                                @endif
                             </li>
                         </ul>
+                    </li>
                     </li>
                     <li class="nav-item me-md-1">
                        @if(Auth::guard('student')->check())
@@ -88,7 +141,6 @@
                             <a href="/login" class="btn btn-outline-primary px-4 rounded-pill">Student Login</a>
                         @endif
                     </li>
-
                     <li class="nav-item">
                         <a class="btn btn-primary px-4 rounded-pill" href="/admin/login"> Admin</a>
                     </li>

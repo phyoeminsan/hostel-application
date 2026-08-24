@@ -26,6 +26,7 @@
                     <th>No</th>
                     <th>Roll No</th>
                     <th>Name</th>
+                    <th>Major</th>
                     <th>Gender</th>
                     <th>NRC</th>
                     <th>Phone</th>
@@ -46,6 +47,7 @@
                         <td>{{ $i++ }}</td>
                         <td>{{ $student->roll_no }}</td>
                         <td>{{ $student->name }}</td>
+                        <td>{{ $student->major->major_name }}</td>
                         <td>{{ $student->gender }}</td>
                         <td>{{ $student->nrc }}</td>
                         <td>{{ $student->phone_no }}</td>

@@ -11,7 +11,7 @@
                     </span>
                     <h1 class="display-4 fw-bold mb-3">Apply for University Hostel Accommodation</h1>
                     <p class="lead text-dark mb-4">
-                        ကျောင်းသား/ကျောင်းသူများအတွက် လုံခြုံစိတ်ချရပြီး အဆင်ပြေချောမွေ့သော အဆောင်အခန်းများကို လွယ်ကူစွာ စုံစမ်းကြည့်ရှုပြီး Online မှတစ်ဆင့် တိုက်ရိုက် လျှောက်ထားနိုင်ပါသည်။
+                        ကျောင်းသား/သူများအတွက် လုံခြုံစိတ်ချ‌ရသော ကျောင်းတွင်းအဆောင်အခန်းများကို Online မှ တဆင့် လွယ်ကူစွာ တိုက်ရိုက်လျှောက်ထားနိုင်ပါသည်။
                     </p>
                     <a href="#hostels" class="btn btn-primary btn-lg rounded-pill px-4">အဆောင်များ ကြည့်မည်</a>
                 </div>
@@ -103,13 +103,20 @@
                             <div class="card-body p-4 d-flex flex-column">
                                 <h5 class="fw-bold">{{ $hostel->hostel_name }}</h5>
                                 <p class="text-muted small">Gender: {{ $hostel->gender }} </p>
-                                <p class="text-muted small">Capacity: {{ $hostel->capacity }} Students</p>
+
+                                <p class="text-muted small mb-3">
+                                    Available Capacity: 
+                                    <span class="fw-bold {{ $hostel->available_capacity > 0 ? 'text-success' : 'text-danger' }}">
+                                        {{ $hostel->available_capacity }} / {{ $hostel->capacity }} Students
+                                    </span>
+                                </p>
+
                                 <div class="mt-auto">
                                     @if (!Auth::guard('student')->check())
-                                        <!-- Login မဝင်ထားလျှင် Login Page သို့ ခေါ်သွားမည် သို့မဟုတ် Warning Alert ပြမည် -->
-                                        <a href="/login" class="btn btn-secondary w-100 rounded-pill" onclick="return confirm('အဆောင်လျှောက်ထားရန် ဦးစွာ Login ဝင်ပေးပါ၊');">
+                                        <!-- Login မဝင်ထားပါက SweetAlert Box ခေါ်မည့် Function ကို ချိတ်မည် -->
+                                        <button type="button" class="btn btn-secondary w-100 rounded-pill btn-apply" onclick="showLoginAlert()">
                                             Apply Hostel
-                                        </a>
+                                        </button>
                                     @elseif ($isGenderMismatch)
                                         <!-- Gender မတူလျှင် -->
                                         <a href="{{ route('hostel.apply', $hostel->hostel_id) }}" class="btn btn-danger w-100 rounded-pill">
@@ -151,4 +158,24 @@
                 });
             </script>
         @endif
+
+        <script>
+            function showLoginAlert() {
+                Swal.fire({
+                    title: 'Login ဝင်ရောက်ရန် လိုအပ်ပါသည်',
+                    text: 'အဆောင်လျှောက်ထားရန် ဦးစွာ Login ဝင်ပေးပါ။',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#0d6efd',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Login သို့သွားမည်',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // OK နှိပ်ပါက Student Login Route သို့ သွားမည်
+                        window.location.href = "/login";
+                    }
+                });
+            }
+            </script>
 @endsection

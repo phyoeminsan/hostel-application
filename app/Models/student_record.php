@@ -16,7 +16,6 @@ class student_record extends Model
         'academic_year_id',
         'year_id',
         'student_id',
-        'major_id',
     ];
 
     public function academic_year(){

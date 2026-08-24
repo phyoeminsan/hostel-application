@@ -11,6 +11,7 @@ class hostel_application extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'hostel_applications';
+    protected $primaryKey = 'application_id';
     protected $fillable = [
         'record_id',
         'hostel_id',

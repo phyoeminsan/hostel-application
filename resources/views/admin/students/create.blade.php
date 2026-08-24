@@ -47,6 +47,18 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label fw-bold">Majors</label>
+                        <select name="major_id" id="major_id" class="form-select bg-light @error('major_id') is-invalid @elseif(old('student_id')) is-valid @enderror">
+                            <option value="">Select Students</option>
+                            @foreach($majors as $major)
+                                <option value="{{ $major->major_id }}" {{ old('major_id') == $major->major_id? 'selected' : '' }}>{{ $major->major_name }}</option>
+                            @endforeach
+                        </select>
+                        @error('major_id')
+                            <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label fw-bold">Gender</label>
                         <select name="gender" id="gender" class="form-select bg-light @error('gender') is-invalid @elseif(old('gender')) is-valid @enderror" value="{{ old('gender') }}">
                                 <option value="">Select Gender</option>
@@ -82,14 +94,6 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Address</label>
-                        <input type="text" name="address" class="form-control @error('address') is-invalid @elseif(old('address')) is-valid
-                        @enderror" id="address" value="{{ old('address') }}">
-                        @error('address')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
                         <label class="form-label fw-bold">Profile</label>
                         <input type="file" name="profile" class="form-control @error('profile') is-invalid @elseif(old('profile')) is-valid
                         @enderror" id="profile" value="{{ old('profile') }}">
@@ -110,6 +114,14 @@
                         <input type="password" name="password" class="form-control @error('password') is-invalid @elseif(old('password')) is-valid
                         @enderror" id="password" value="{{ old('password') }}">
                         @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Address</label>
+                        <textarea name="address" class="form-control @error('address') is-invalid @elseif(old('address')) is-valid
+                        @enderror" id="address">{{ old('address') }}</textarea>
+                        @error('address')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

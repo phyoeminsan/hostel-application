@@ -49,8 +49,11 @@
                                 <p class="text-muted small">Gender: {{ $hostel->gender }} </p>
                                 <p class="text-muted small">Capacity: {{ $hostel->capacity }} Students</p>
                                 <div class="mt-auto">
-                                    @if ($isGenderMismatch)
-                                        <!-- Gender မတူသော်လည်း နှိပ်လိုက်ပါက Controller ထံသွားပြီး Alert ပြစေရန် -->
+                                    @if(!Auth::guard('student')->check())
+                                    <a href="/login" class="btn btn-primary w-100 rounded-pill btn-apply" onclick="return confirm('အဆောင်လျှောက်ထားရန် ဦးစွာ Login ဝင်ပေးပါ။');">
+                                        Apply Hostel
+                                    </a>
+                                    @elseif ($isGenderMismatch)
                                         <a href="{{ route('hostel.apply', $hostel->hostel_id) }}" class="btn btn-secondary w-100 rounded-pill">
                                             Not Allowed ({{ $hostel->gender }} Only)
                                         </a>

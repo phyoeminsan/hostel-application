@@ -23,13 +23,13 @@ class FrontController extends Controller
     }
 
     public function showApplyForm($id){
+
         $hostel = Hostel::find($id);
 
         // 1. Login ဝင်ထားသော Student ကို ရယူခြင်း
         $studentUser = Auth::guard('student')->user();
         $student = $studentUser->student_id ?? Auth::id();
         
-        // 2. Student Record ရှာခြင်း
         $student_record = Student_record::with(['student', 'academic_year', 'year'])
                     ->where('student_id', $student)
                     ->latest('record_id')
@@ -41,7 +41,7 @@ class FrontController extends Controller
         // 4. Gender စစ်ဆေးခြင်း
         if ($studentGender && strtolower($hostel->gender) !== 'all') {
             if (strtolower(trim($studentGender)) !== strtolower(trim($hostel->gender))) {
-                return redirect()->route('index')->with('error', 'ကျေးဇူးပြုပြီး သင်၏ Gender နှင့် ကိုက်ညီသော အဆောင်ကိုသာ လျှောက်ထားနိုင်ပါသည်။');
+                return redirect()->route('index')->with('error', 'ကျေးဇူးပြု၍ သင်၏ Gender နှင့် ကိုက်ညီသော အဆောင်ကိုသာ ရွေးချယ်လျှောက်ထားနိုင်ပါသည်။');
             }
         }
 

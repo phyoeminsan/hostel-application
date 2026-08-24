@@ -21,7 +21,6 @@ class Student_recordFactory extends Factory
             'academic_year_id' => rand(1,10),
             'year_id' => rand(1,5),
             'student_id' => rand(1,10),
-            'major_id' => rand(1,3),
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\student;
+use App\Models\major;
 use App\Http\Requests\StudentRequest;
 use App\Http\Requests\StudentUpdateRequest;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('admin.students.create');
+        $majors = Major::all();
+        return view('admin.students.create', compact('majors'));
     }
 
     /**
@@ -64,7 +66,8 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         $student = Student::find($id);
-        return view('admin.students.edit', compact('student'));
+        $majors = Major::all();
+        return view('admin.students.edit', compact('student','majors'));
     }
 
     /**
@@ -104,11 +107,12 @@ class StudentController extends Controller
     {
         $credentials = $request->validate([
             'roll_no'  => ['required'],
-            'password' => ['required'],
+            'password' => ['required', 'min:8'],
         ],
           [
             'roll_no.required'  => 'ကျောင်းသားနံပါတ် ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
             'password.required' => 'လျှို့ဝှက်နံပါတ် ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
+            'password.min'      => 'လျှို့ဝှက်နံပါတ်သည် အနည်းဆုံး ၈ လုံး ရှိရပါမည်။',
         ]);  
 
         if (Auth::guard('student')->attempt($credentials)) {

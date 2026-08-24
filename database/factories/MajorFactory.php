@@ -18,7 +18,7 @@ class MajorFactory extends Factory
     public function definition(): array
     {
         return [
-            'major_name' => $this->faker->randomElement(['CS','CT','CST']),
+            'major_name' => $this->faker->randomElement(['CST','CS','CT']),
         ];
     }
 }

@@ -28,11 +28,6 @@ return new class extends Migration
                   ->references('student_id')
                   ->on('students')
                   ->onDelete('cascade');
-            $table->unsignedBigInteger('major_id');
-            $table->foreign('major_id')
-                  ->references('major_id')
-                  ->on('majors')
-                  ->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

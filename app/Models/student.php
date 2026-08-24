@@ -26,6 +26,7 @@ class student extends Authenticatable
         'profile',
         'email',
         'password',
+        'major_id'
     ];
 
     protected function casts(): array
@@ -38,4 +39,12 @@ class student extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function major(){
+        return $this->belongsTo(Major::class, 'major_id');
+    }
+
+    public function hostel_application(){
+        return $this->hasMany(Hostel_application::class, 'record_id', 'student_id');
+    }
 }

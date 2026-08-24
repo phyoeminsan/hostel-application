@@ -48,7 +48,7 @@
                         </td>
                         <td>{{ $student_record->year->year_name }}</td>
                         <td>{{ $student_record->student->name }}</td>
-                        <td>{{ $student_record->major->major_name }}</td>
+                        <td>{{ $student_record->student->major->major_name }}</td>
                         <td class="text-end">
                             <a href="{{ route('backend.student_records.edit', $student_record->record_id) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-edit"></i></a>
                             <button class="btn btn-sm btn-outline-danger delete" data-id="{{ $student_record->record_id }}"><i class="fa-solid fa-trash"></i></button>

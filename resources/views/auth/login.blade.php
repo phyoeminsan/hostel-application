@@ -60,7 +60,7 @@
                                         </button>
                                     </div>
                                     @error('password')
-                                        <span class="text-danger small ms-1">{{ $message }}</span>
+                                        <small class="text-danger d-block mt-1">{{ $message }}</small>
                                     @enderror
                                 </div>
 
@@ -83,17 +83,7 @@
             </div>
         </div>
     </div>
-@if ($errors->has('roll_no') || $errors->has('password'))
-    <script>
-        Swal.fire({
-            icon: 'warning',
-            title: 'အချက်အလက် လိုအပ်နေပါသည်!',
-            text: 'ကျေးဇူးပြု၍ ကျောင်းသားနံပါတ် နှင့် လျှို့ဝှက်နံပါတ်ကို ဖြည့်သွင်းပေးပါ',
-            confirmButtonColor: '#f39c12',
-            confirmButtonText: 'နားလည်ပါပြီ'
-        });
-    </script>
-@endif
+{{-- ၁။ Roll No သို့မဟုတ် Password တစ်ခုခု မှားယွင်းနေပါက အနီရောင် Box ပြရန် --}}
 @if ($errors->has('auth_failed'))
     <script>
         Swal.fire({
@@ -104,9 +94,32 @@
             confirmButtonText: 'ပြန်လည်ကြိုးစားပါ'
         });
     </script>
+
+{{-- ၂။ Password (၈) လုံး မပြည့်ပါက အနီရောင် Box ပြရန် --}}
+@elseif ($errors->has('password') && $errors->first('password') === 'လျှို့ဝှက်နံပါတ်သည် အနည်းဆုံး ၈ လုံး ရှိရပါမည်။')
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'ဝင်ရောက်၍ မရပါ!',
+            text: '{{ $errors->first("password") }}',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'ပြန်လည်ကြိုးစားပါ'
+        });
+    </script>
+
+{{-- ၃။ Field တစ်ခုခု ကွက်လပ်ထားခဲ့ပါက ဝါးရောင် Alert Box ပြရန် --}}
+@elseif ($errors->has('roll_no') || $errors->has('password'))
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'အချက်အလက် လိုအပ်နေပါသည်!',
+            text: 'ကျေးဇူးပြု၍ ကျောင်းသားနံပါတ် နှင့် လျှို့ဝှက်နံပါတ်ကို ဖြည့်သွင်းပေးပါ',
+            confirmButtonColor: '#f39c12',
+            confirmButtonText: 'နားလည်ပါပြီ'
+        });
+    </script>
 @endif
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const togglePassword = document.querySelector('#togglePassword');
