@@ -47,4 +47,8 @@ class student extends Authenticatable
     public function hostel_application(){
         return $this->hasMany(Hostel_application::class, 'record_id', 'student_id');
     }
+
+    public function student_record(){
+        return $this->hasMany(Student_record::class, 'student_id','student_id');
+    }
 }

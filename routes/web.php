@@ -13,6 +13,10 @@ Route::get('/hostels/{id}/apply', [App\Http\Controllers\FrontController::class, 
 
 Route::post('/hostels/apply/store', [App\Http\Controllers\FrontController::class, 'storeApplication'])->name('hostels.apply.store');
 
+Route::middleware(['auth:student'])->group(function () {
+    Route::get('/hostel_applications/{id}/payment', [App\Http\Controllers\FrontController::class, 'showPaymentForm'])->name('hostels.payment');
+});
+
 Route::prefix('admin')->group(function () {
     Route::get('/login', [App\Http\Controllers\Admin\AdminLoginController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [App\Http\Controllers\Admin\AdminLoginController::class, 'login']);
@@ -30,6 +34,7 @@ Route::middleware(['auth:student'])->group(function () {
     Route::post('/student/logout', [App\Http\Controllers\Admin\StudentController::class, 'logout'])->name('student.logout');
     Route::get('/student/profile', [App\Http\Controllers\Admin\StudentController::class, 'profile'])->name('student.profile');
     Route::post('/student/profile/update', [App\Http\Controllers\Admin\StudentController::class, 'updateProfile'])->name('student.profile.update');
+
 });
 
 Route::group(['prefix' => 'backend','as' => 'backend.','middleware' => ['auth:admin']],function(){

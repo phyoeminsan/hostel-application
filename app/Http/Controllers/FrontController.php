@@ -75,4 +75,18 @@ class FrontController extends Controller
 
         return redirect()->route('index')->with('success', 'အဆောင်လျှောက်ထားခြင်း အောင်မြင်ပါသည်။ ကျောင်းဘက်ကနေမှ အတည်ပြုမည့်အချိန်ထိ ခေတ္တစောင့်ဆိုင်းပေးပါ။ ');
     }
+
+     public function showPaymentForm($id)
+    {
+        $hostel_application = Hostel_application::find($id);
+
+        $studentUser = Auth::guard('student')->user();
+        $student = $studentUser->student_id ?? Auth::guard('student')->id();
+        $student_record = Student_record::with(['student', 'academic_year', 'year'])
+                ->where('student_id', $student)
+                ->latest('record_id')
+                ->first();
+
+        return view('front.payments', compact('hostel_application', 'student_record'));
+    }
 }

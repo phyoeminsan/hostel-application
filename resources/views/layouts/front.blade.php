@@ -74,24 +74,24 @@
                                         <!-- Message -->
                                         @if($userNotification->status == 'pending')
                                             <p class="text-muted mb-0 mt-1" style="font-size: 0.85rem; line-height: 1.6;">
-                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> Form ကို Admin မှ စစ်ဆေးနေဆဲ ဖြစ်ပါသည်။
+                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> လျှောက်လွှာ ကို ကျောင်းဘက်ကနေ မှ စစ်ဆေးနေဆဲ ဖြစ်ပါသည်။
                                             </p>
                                         @elseif($userNotification->status == 'approved')
                                             <p class="text-muted mb-1 mt-1" style="font-size: 0.85rem; line-height: 1.6;">
-                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> Form ကို Admin မှ <span class="text-success fw-medium">လက်ခံအတည်ပြု</span> လိုက်ပါသည်။
+                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> လျှောက်လွှာ ကို ကျောင်းဘက်ကနေ မှ <span class="text-success fw-medium">လက်ခံအတည်ပြု</span> လိုက်ပါသည်။
                                             </p>
                                             <div class="mt-2">
-                                                <a href="#" class="btn btn-sm btn-outline-success w-100 fw-bold">
+                                                <a href="{{ route('hostels.payment', $userNotification->application_id ?? '#') }}" class="btn btn-sm btn-outline-success w-100 fw-bold">
                                                     <i class="bi bi-credit-card"></i> Payment ပြုလုပ်ရန် ဤနေရာကို နှိပ်ပါ
                                                 </a>
                                             </div>
                                         @elseif($userNotification->status == 'rejected')
                                             <p class="text-muted mb-1 mt-1" style="font-size: 0.85rem; line-height: 1.6;">
-                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> Form ကို <span class="text-danger fw-medium">ငြင်းပယ်</span> လိုက်ပါသည်။
+                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> လျှောက်လွှာ ကို ကျောင်းဘက်ကနေ မှ <span class="text-danger fw-medium">ငြင်းပယ်</span> လိုက်ပါသည်။
                                             </p>
                                             @if($userNotification->reason)
                                                 <p class="text-dark small bg-light p-2 rounded border mb-0">
-                                                    <strong>Reason:</strong> {{ $userNotification->reason }}
+                                                    <strong>Reason: </strong> {{ $userNotification->reason }}
                                                 </p>
                                             @endif
                                         @endif
