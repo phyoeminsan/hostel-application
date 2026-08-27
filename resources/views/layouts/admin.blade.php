@@ -107,6 +107,10 @@
                 <a class="nav-link text-white" href="{{ route('backend.hostel_applications') }}">
                     <i class="fa-solid fa-credit-card me-2"></i> Hostel Applications
                 </a>
+
+                <a class="nav-link text-white" href="{{ route('backend.payments') }}">
+                    <i class="fa-solid fa-credit-card me-2"></i> Payments
+                </a>
             </div>
         </div>
     </nav>

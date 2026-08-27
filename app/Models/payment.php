@@ -11,6 +11,7 @@ class payment extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'payments';
+    protected $primaryKey = 'payment_id';
     protected $fillable = [
         'payment_method',
         'amount',
@@ -18,6 +19,12 @@ class payment extends Model
         'transaction_no',
         'payment_date',
         'status',
+        'reason',
         'application_id',
     ];
+
+    public function hostel_application()
+    {
+        return $this->belongsTo(Hostel_application::class, 'application_id', 'application_id');
+    }
 }

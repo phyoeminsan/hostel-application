@@ -15,6 +15,8 @@ Route::post('/hostels/apply/store', [App\Http\Controllers\FrontController::class
 
 Route::middleware(['auth:student'])->group(function () {
     Route::get('/hostel_applications/{id}/payment', [App\Http\Controllers\FrontController::class, 'showPaymentForm'])->name('hostels.payment');
+
+    Route::post('/hostel_applications/{id}/payment', [App\Http\Controllers\FrontController::class, 'storePayment'])->name('hostels.payment.store');
 });
 
 Route::prefix('admin')->group(function () {
@@ -51,4 +53,10 @@ Route::group(['prefix' => 'backend','as' => 'backend.','middleware' => ['auth:ad
 
     Route::post('hostel_applications/{id}/approved', [App\Http\Controllers\Admin\Hostel_applicationController::class, 'approved'])->name('hostel_applications.approved');
     Route::post('hostel_applications/{id}/rejected', [App\Http\Controllers\Admin\Hostel_applicationController::class, 'rejected'])->name('hostel_applications.rejected');
+
+    Route::get('payments', [App\Http\Controllers\Admin\PaymentController::class, 'payments'])->name('payments'); 
+
+    Route::get('payments/{id}', [App\Http\Controllers\Admin\PaymentController::class, 'details'])->name('payment.details');
+
+    Route::put('payments/{id}/status', [App\Http\Controllers\Admin\PaymentController::class, 'updateStatus'])->name('payment.updateStatus');
 });

@@ -40,77 +40,155 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#hostels"> Hostels</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="btn btn-light position-relative rounded-circle p-2 ms-md-1" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-bell fs-5 text-secondary"></i>
+                    <!-- Bell Notification Dropdown -->
+                    <li class="nav-item dropdown me-3 list-unstyled">
+                        <!-- 1. ခေါင်းလောင်း Icon Button -->
+                        <a class="nav-link position-relative p-2" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bell fs-5"></i>
+                            {{-- Status ရှိရင် အနီရောင်/အဝါရောင် Dot လေး ခေါင်းလောင်းပေါ်မှာ ပြမည် --}}
                             @if(isset($userNotification))
-                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                                @php
+                                    $paymentStatus = $userNotification->payment->status ?? null;
+                                    $appStatus = $userNotification->status ?? null;
+                                    if (in_array(strtolower(trim($paymentStatus)), ['failed', 'rejected']) || 
+                                        in_array(strtolower(trim($appStatus)), ['rejected', 'failed'])) {
+                                        $dotColor = 'bg-danger';
+                                    }
+                                    elseif (in_array($paymentStatus, ['pending', 'verifying', 'processing']) || in_array($appStatus, ['pending', 'verifying', 'processing'])) {
+                                        $dotColor = 'bg-warning';
+                                    }
+                                    elseif (in_array(strtolower(trim($paymentStatus)), ['paid', 'verified']) || 
+                                            in_array(strtolower(trim($appStatus)), ['approved'])) {
+                                        $dotColor = 'bg-success';
+                                    } 
+                                    else {
+                                        $dotColor = 'bg-warning';
+                                    }
+                                @endphp
+
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 
+                                    {{ $dotColor }} 
+                                    border border-light rounded-circle">
+                                </span>
                             @endif
                         </a>
-                        <!-- Notification Dropdown Menu -->
-                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2" style="width: 320px;">
-                            <!-- Header -->
-                            <li class="px-3 py-2 border-bottom">
-                                <h6 class="fw-bold mb-2 text-dark">အကြောင်းကြားစာများ</h6>
-                            </li>
 
-                            <!-- Body -->
-                            <li>
-                                @if(isset($userNotification))
-                                    <div class="px-3 py-3 dropdown-item-text transition-all">
-                                        <!-- Title & Badge -->
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-bold text-primary" style="font-size: 0.9rem;">Hostel Application Status</span>
-                                            
-                                            @if($userNotification->status == 'pending')
-                                                <span class="badge rounded-pill bg-warning text-dark px-2 py-1" style="font-size: 0.7rem;">Pending</span>
-                                            @elseif($userNotification->status == 'approved')
-                                                <span class="badge rounded-pill bg-success px-2 py-1" style="font-size: 0.7rem;">Approved</span>
-                                            @elseif($userNotification->status == 'rejected')
-                                                <span class="badge rounded-pill bg-danger px-2 py-1" style="font-size: 0.7rem;">Rejected</span>
-                                            @endif
-                                        </div>
+                        <!-- 2. ခေါင်းလောင်း နှိပ်မှ ပေါ်လာမည့် Dropdown Menu (Right Aligned) -->
+                        <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-2 p-0" aria-labelledby="notifDropdown" style="width: 320px; right: 0; left: auto;">
+                            
+                            <!-- Dropdown Header -->
+                            <div class="px-3 py-2 bg-light border-bottom d-flex justify-content-between align-items-center rounded-top">
+                                <span class="fw-bold text-dark style-0-9">အကြောင်းကြားစာများ</span>
+                                <span class="badge bg-primary rounded-pill">Notification</span>
+                            </div>
+
+                            <!-- Dropdown Body -->
+                            @if(isset($userNotification))
+                                <div class="p-3">
+                                    <!-- Title & Badge -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="fw-bold text-primary small">Hostel Application</span>
                                         
-                                        <!-- Message -->
                                         @if($userNotification->status == 'pending')
-                                            <p class="text-muted mb-0 mt-1" style="font-size: 0.85rem; line-height: 1.6;">
-                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> လျှောက်လွှာ ကို ကျောင်းဘက်ကနေ မှ စစ်ဆေးနေဆဲ ဖြစ်ပါသည်။
-                                            </p>
+                                            <span class="badge rounded-pill bg-warning text-dark">Pending</span>
                                         @elseif($userNotification->status == 'approved')
-                                            <p class="text-muted mb-1 mt-1" style="font-size: 0.85rem; line-height: 1.6;">
-                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> လျှောက်လွှာ ကို ကျောင်းဘက်ကနေ မှ <span class="text-success fw-medium">လက်ခံအတည်ပြု</span> လိုက်ပါသည်။
-                                            </p>
-                                            <div class="mt-2">
-                                                <a href="{{ route('hostels.payment', $userNotification->application_id ?? '#') }}" class="btn btn-sm btn-outline-success w-100 fw-bold">
-                                                    <i class="bi bi-credit-card"></i> Payment ပြုလုပ်ရန် ဤနေရာကို နှိပ်ပါ
-                                                </a>
-                                            </div>
+                                            @if(optional($userNotification->payment)->status == 'pending')
+                                                <span class="badge rounded-pill bg-warning text-dark">Payment Verifying</span>
+                                            @elseif(optional($userNotification->payment)->status == 'paid' || optional($userNotification->payment)->status == 'verified')
+                                                <span class="badge rounded-pill bg-success">Completed</span>
+                                            @elseif(optional($userNotification->payment)->status == 'failed')
+                                                <span class="badge rounded-pill bg-danger">Payment failed</span>
+                                            @else
+                                                <span class="badge rounded-pill bg-success">Approved</span>
+                                            @endif
                                         @elseif($userNotification->status == 'rejected')
-                                            <p class="text-muted mb-1 mt-1" style="font-size: 0.85rem; line-height: 1.6;">
-                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> လျှောက်လွှာ ကို ကျောင်းဘက်ကနေ မှ <span class="text-danger fw-medium">ငြင်းပယ်</span> လိုက်ပါသည်။
+                                            <span class="badge rounded-pill bg-danger">Rejected</span>
+                                        @endif
+                                    </div>
+                                    
+                                    <!-- Messages -->
+                                    @if($userNotification->status == 'pending')
+                                        <p class="text-muted small mb-0" style="line-height: 1.5;">
+                                            သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> လျှောက်လွှာကို ကျောင်းဘက်မှ စစ်ဆေးနေဆဲ ဖြစ်ပါသည်။
+                                        </p>
+
+                                    @elseif($userNotification->status == 'approved')
+                                        @php
+                                            $paymentStatus = optional($userNotification->payment)->status;
+                                        @endphp
+
+                                        {{-- 1. Payment မလုပ်ရသေးပါက --}}
+                                        @if(!$userNotification->payment)
+                                            <p class="text-muted small mb-2" style="line-height: 1.5;">
+                                                သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> လျှောက်လွှာကို <span class="text-success fw-medium">လက်ခံအတည်ပြု</span> လိုက်ပါသည်။
                                             </p>
-                                            @if($userNotification->reason)
-                                                <p class="text-dark small bg-light p-2 rounded border mb-0">
-                                                    <strong>Reason: </strong> {{ $userNotification->reason }}
+                                            <a href="{{ route('hostels.payment', $userNotification->application_id ?? $userNotification->id) }}" class="btn btn-sm btn-success w-100 fw-bold">
+                                                <i class="bi bi-credit-card me-1"></i> Payment ပြုလုပ်ရန်
+                                            </a>
+
+                                        {{-- 2. Payment လုပ်ပြီး Admin စစ်ဆေးနေချိန် (Button ဖျောက်မည်) --}}
+                                        @elseif($paymentStatus == 'pending')
+                                            <div class="p-2 bg-light border rounded border-warning">
+                                                <small class="d-block fw-bold text-warning mb-1">
+                                                    <i class="bi bi-clock-history me-1"></i> Admin မှ စိစစ်နေပါသည်
+                                                </small>
+                                                <small class="text-muted d-block" style="font-size: 0.78rem;">
+                                                    သင်၏ ငွေပေးချေမှုကို စစ်ဆေးနေပါသည်။ စိစစ်ပြီးပါက အခန်းနေရာကို ထပ်မံ အကြောင်းကြားပေးပါမည်။
+                                                </small>
+                                            </div>
+
+                                        {{-- 3. Payment Rejected ဖြစ်ပါက (Button ပြန်ဖော်မည်) --}}
+                                        @elseif($paymentStatus == 'failed')
+                                            <p class="text-muted small mb-1" style="line-height: 1.5;">
+                                                သင်ပေးပို့ထားသော ငွေပေးချေမှုမှာ <span class="text-danger fw-medium">ငြင်းပယ်ခံရပါသည်</span>။ ကျေးဇူးပြု၍ ငွေပြန်လည် ပေးချေပေးပါရန်။
+                                            </p>
+                                            @if(optional($userNotification->payment)->reason)
+                                                <p class="text-dark small bg-light p-2 rounded border mb-2">
+                                                    <strong>Reason: </strong> {{ $userNotification->payment->reason }}
                                                 </p>
                                             @endif
+                                            <div class="d-flex gap-2 mt-2 align-items-stretch">
+                                                @if(optional($userNotification->payment)->payment_slip)
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary flex-fill fw-semibold d-inline-flex align-items-center justify-content-center py-2 style-0-8" data-bs-toggle="modal" data-bs-target="#viewSlipModal">
+                                                        <i class="bi bi-file-earmark-image me-1" style="font-size: 1.1rem; line-height: 0;"></i> ပုံပြန်ကြည့်ရန်
+                                                    </button>
+                                                @endif
+                                                <a href="{{ route('hostels.payment', $userNotification->application_id ?? $userNotification->id) }}" class="btn btn-sm btn-danger flex-fill fw-semibold d-inline-flex align-items-center justify-content-center py-2 style-0-8">
+                                                    <i class="bi bi-arrow-repeat me-1" style="font-size: 1.1rem; line-height: 0;"></i>ငွေပြန်လည်ပေးချေရန်
+                                                </a>
+                                            </div>
+
+                                        {{-- 4. Payment Completed --}}
+                                        @elseif($paymentStatus == 'paid' || $paymentStatus == 'verified')
+                                            <p class="text-success small mb-0">
+                                                <i class="bi bi-check-circle-fill me-1"></i> ငွေပေးချေမှု အတည်ပြုပြီးပါပြီ။ အဆောင်အခန်း နေရာ ချထားပေးပြီးပါပြီ။
+                                            </p>
                                         @endif
-                                        
-                                        <!-- Timestamp (Optional) -->
-                                        <small class="text-black-50 mt-2 d-block" style="font-size: 0.7rem;">
-                                            <i class="bi bi-clock me-1"></i> {{ $userNotification->created_at->diffForHumans() ?? 'Just now' }}
-                                        </small>
-                                    </div>
-                                @else
-                                    <!-- Empty State -->
-                                    <div class="px-3 py-4 text-center">
-                                        <i class="bi bi-bell-slash text-muted fs-3 mb-2 d-block"></i>
-                                        <p class="text-muted small mb-0">အကြောင်းကြားစာ မရှိသေးပါ။</p>
-                                    </div>
-                                @endif
-                            </li>
-                        </ul>
-                    </li>
+
+                                    @elseif($userNotification->status == 'rejected')
+                                        <p class="text-muted small mb-1" style="line-height: 1.5;">
+                                            သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> လျှောက်လွှာကို <span class="text-danger fw-medium">ငြင်းပယ်</span> လိုက်ပါသည်။
+                                        </p>
+                                        @if($userNotification->reason)
+                                            <p class="text-dark small bg-light p-2 rounded border mb-0">
+                                                <strong>Reason: </strong> {{ $userNotification->reason }}
+                                            </p>
+                                        @endif
+                                    @endif
+                                    
+                                    <!-- Time -->
+                                    <small class="text-black-50 mt-2 d-block style-0-7">
+                                        <i class="bi bi-clock me-1"></i> {{ $userNotification->created_at->diffForHumans() ?? 'Just now' }}
+                                    </small>
+                                </div>
+                            @else
+                                <!-- Empty State -->
+                                <div class="px-3 py-4 text-center">
+                                    <i class="bi bi-bell-slash text-muted fs-3 mb-2 d-block"></i>
+                                    <p class="text-muted small mb-0">အကြောင်းကြားစာ မရှိသေးပါ။</p>
+                                </div>
+                            @endif
+                        </div>
                     </li>
                     <li class="nav-item me-md-1">
                        @if(Auth::guard('student')->check())
@@ -148,7 +226,30 @@
             </div>
         </div>
     </nav>
-
+    @if(isset($userNotification->payment) && $userNotification->payment->payment_slip)
+    <div class="modal fade" id="viewSlipModal" tabindex="-1" aria-labelledby="viewSlipModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered"> 
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-light py-3">
+                    <h6 class="modal-title fw-bold text-dark" id="viewSlipModalLabel">
+                        <i class="bi bi-receipt me-2 text-primary"></i>တင်သွင်းထားသော Payment Slip
+                    </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-3 bg-dark-subtle">
+                    <img src="{{ asset($userNotification->payment->payment_slip) }}" 
+                        alt="Payment Slip" 
+                        class="img-fluid rounded shadow-sm" 
+                        style="max-height: 80vh; width: auto; object-fit: contain;">
+                </div>
+                <div class="modal-footer py-2 bg-light">
+                    <button type="button" class="btn btn-secondary px-4 fw-bold" data-bs-dismiss="modal">ပိတ်မည်</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    @endif
     <main>
         @yield('content')
     </main>

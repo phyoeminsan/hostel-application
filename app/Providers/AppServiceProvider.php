@@ -32,7 +32,9 @@ class AppServiceProvider extends ServiceProvider
                 // Student ၏ နောက်ဆုံး တင်ထားသော Application ကို ဆွဲယူမည်
                 $latestApplication = Hostel_application::whereHas('student_record', function ($q) use ($studentId) {
                     $q->where('student_id', $studentId);
-                })->with('hostel')->latest('application_id')->first();
+                })->with(['hostel', 'payment'])
+                  ->latest('application_id')
+                  ->first();
 
                 $view->with('userNotification', $latestApplication);
             }

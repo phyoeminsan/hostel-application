@@ -89,6 +89,36 @@
       border-color: #2563eb;
     }
 </style>
+  <!-- SweetAlert2 CDN ကို Head ထဲတွင် ထည့်ပါ (မထည့်ရသေးပါက) -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Success Session ရှိပါက Popup Box ပြပေးပြီး OK နှိပ်ပါက Index သို့ ပြန်သွားရန် -->
+  @if(session('success'))
+  <script>
+      Swal.fire({
+          title: 'အောင်မြင်ပါသည်။',
+          text: "{{ session('success') }}",
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#0d6efd'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // OK နှိပ်လိုက်ရင် index route ဆီ ပြန်သွားမည်
+              window.location.href = "{{ route('index') }}";
+          }
+      });
+  </script>
+  @endif
+  <!-- Error & Success Alert Display -->
+@if ($errors->any())
+    <div class="alert alert-danger rounded-3 mb-4">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-lg-7 col-md-9">
@@ -104,7 +134,8 @@
         </div>
         
         <div class="card-body p-4 p-md-5">
-          <form action="#" method="POST" enctype="multipart/form-data">
+          <form action="{{ route('hostels.payment.store', $hostel_application->application_id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="info-box mb-4">
               <span class="section-label"><i class="bi bi-person-badge me-1"></i> Resident Information</span>
               <div class="row g-3">
@@ -152,11 +183,12 @@
                 <label for="paymentMethod" class="form-label fw-semibold">Payment Method</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-wallet2"></i></span>
-                  <select class="form-select" id="paymentMethod" name="paymentMethod" required>
+                  <select class="form-select" id="payment_method" name="payment_method" required>
                     <option value="" selected disabled>Select Payment Method</option>
-                    <option value="kpay">KBZPay / WavePay</option>
+                    <option value="KPay">KBZPay</option>
+                    <option value="WavePay">WavePay</option>
                     <option value="bank_transfer">Bank Transfer (KBZ, AYA, CB)</option>
-                    <option value="cash">Direct Cash to Office</option>
+                    <option value="cash">Direct Cash</option>
                   </select>
                 </div>
               </div>
@@ -176,7 +208,7 @@
                 <label for="transactionNo" class="form-label fw-semibold">Transaction NO.</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-receipt-cutoff"></i></span>
-                  <input type="text" class="form-control" id="transactionNo" name="transactionNo" placeholder="TXN-90218301" required>
+                  <input type="text" class="form-control" id="transaction_no" name="transaction_no" placeholder="TXN-90218301" required>
                 </div>
               </div>
 
@@ -184,7 +216,7 @@
                 <label for="paymentDate" class="form-label fw-semibold">Payment Date</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
-                  <input type="date" class="form-control" id="paymentDate" name="paymentDate" required>
+                  <input type="date" class="form-control" id="payment_date" name="payment_date" required>
                 </div>
               </div>
             </div>
@@ -192,13 +224,32 @@
             <!-- Payment Slip Upload Area -->
             <div class="mb-4">
               <label class="form-label fw-semibold">Payment Slip Upload</label>
-              <div class="file-upload-wrapper" onclick="document.getElementById('paymentSlip').click();">
-                <i class="bi bi-cloud-arrow-up text-primary fs-2"></i>
-                <p class="mb-1 mt-2 fw-medium text-dark">Click to upload slip or drag and drop</p>
-                <span class="text-muted small">Supports JPG, PNG, or PDF (Max: 5MB)</span>
-                <input class="d-none" type="file" id="paymentSlip" name="paymentSlip" accept="image/*,.pdf" required>
+      
+              <!-- Upload Wrapper -->
+              <div class="file-upload-wrapper text-center p-4 border border-2 dashed rounded-3" 
+                  style="cursor: pointer; background-color: #f8fafc;" 
+                  onclick="document.getElementById('payment_slip').click();">
+                
+                  <!-- Default Upload State -->
+                  <div id="uploadDefaultState">
+                    <i class="bi bi-cloud-arrow-up text-primary fs-2"></i>
+                    <p class="mb-1 mt-2 fw-medium text-dark">Click to upload slip or drag and drop</p>
+                  </div>
+
+                  <!-- Preview State (File ရွေးပြီးရင် ပေါ်လာမည့်နေရာ) -->
+                  <div id="uploadPreviewState" class="d-none">
+                    <img id="imagePreview" src="#" alt="Slip Preview" class="img-fluid rounded mb-2 d-none" style="max-height: 180px;">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                      <i class="bi bi-file-earmark-check text-success fs-4"></i>
+                      <span id="fileNameDisplay" class="fw-semibold text-dark"></span>
+                    </div>
+                    <small class="text-primary d-block mt-1">Click to change file</small>
+                  </div>
+
+                  <!-- Input File -->
+                  <input class="d-none" type="file" id="payment_slip" name="payment_slip" accept="image/*,.pdf" required onchange="handleFileSelect(this)">
               </div>
-            </div>
+          </div>
 
             <!-- Submit Button -->
             <div class="d-grid mt-4">
@@ -215,4 +266,34 @@
   </div>
 </div>
 @endsection
+<script>
+function handleFileSelect(input) {
+  const file = input.files[0];
+  const defaultState = document.getElementById('uploadDefaultState');
+  const previewState = document.getElementById('uploadPreviewState');
+  const fileNameDisplay = document.getElementById('fileNameDisplay');
+  const imagePreview = document.getElementById('imagePreview');
 
+  if (file) {
+    // ဖိုင်နာမည် ပြပေးခြင်း
+    fileNameDisplay.textContent = file.name;
+    
+    // ပုံဖြစ်ပါက Image Preview ပြပေးခြင်း
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        imagePreview.classList.remove('d-none');
+      }
+      reader.readAsDataURL(file);
+    } else {
+      // PDF ဖြစ်ပါက ပုံကို ဖျောက်ထားခြင်း
+      imagePreview.classList.add('d-none');
+    }
+
+    // UI အခြေအနေ ပြောင်းလဲခြင်း
+    defaultState.classList.add('d-none');
+    previewState.classList.remove('d-none');
+  }
+}
+</script>

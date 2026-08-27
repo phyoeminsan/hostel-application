@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('payment_slip');
             $table->string('transaction_no');
             $table->date('payment_date');
+            $table->text('reason');
             $table->string('status');
             $table->unsignedBigInteger('application_id');
             $table->foreign('application_id')

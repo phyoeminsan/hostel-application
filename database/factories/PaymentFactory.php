@@ -24,6 +24,7 @@ class PaymentFactory extends Factory
             'transaction_no' => $this->faker->unique()->numberBetween(100000, 999999),
             'payment_date' => date('Y-m-d'),
             'status' => $this->faker->randomElement(['paid','failed']),
+            'reason' => $this->faker->word(),
             'application_id' => rand(1,10),
         ];
     }

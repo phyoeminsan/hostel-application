@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Models\Hostel;
 use App\Models\Student_record;
+use App\Models\Payment;
 use App\Models\Hostel_application; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +77,7 @@ class FrontController extends Controller
         return redirect()->route('index')->with('success', 'အဆောင်လျှောက်ထားခြင်း အောင်မြင်ပါသည်။ ကျောင်းဘက်ကနေမှ အတည်ပြုမည့်အချိန်ထိ ခေတ္တစောင့်ဆိုင်းပေးပါ။ ');
     }
 
-     public function showPaymentForm($id)
+    public function showPaymentForm($id)
     {
         $hostel_application = Hostel_application::find($id);
 
@@ -88,5 +89,34 @@ class FrontController extends Controller
                 ->first();
 
         return view('front.payments', compact('hostel_application', 'student_record'));
+    }
+
+    public function storePayment(Request $request, $id)
+    {
+        $request->validate([
+            'payment_method' => 'required|string',
+            'amount'         => 'required|numeric|min:0',
+            'payment_slip'   => 'required|image|mimes:jpeg,png,jpg,pdf|max:5120',
+            'transaction_no' => 'required|string|max:255',
+            'payment_date'   => 'required|date',
+        ]);
+
+        $payment = new Payment();
+        $payment->application_id = $id;
+        $payment->payment_method        = $request->payment_method;
+        $payment->amount                = $request->amount;
+        $payment->transaction_no        = $request->transaction_no;
+        $payment->payment_date          = $request->payment_date;
+        $payment->status         = 'pending';
+
+        if ($request->hasFile('payment_slip')) {
+            $file_name = time() . '.' . $request->payment_slip->extension();
+            $request->payment_slip->move(public_path('images/payment_slips/'), $file_name);
+            $payment->payment_slip = '/images/payment_slips/' . $file_name;
+        }
+
+        $payment->save();
+
+        return redirect()->back()->with('success', 'ငွေပေးချေမှု အချက်အလက်များ အောင်မြင်စွာ ပေးပို့ပြီးပါပြီ။ ကျောင်းဘက်ကနေ မှ စိစစ်ပြီး အဆောင်အခန်း နေရာ ချထားပေးမှု အခြေအနေအား ထပ်မံ အကြောင်းကြားပေးပါမည်။');
     }
 }

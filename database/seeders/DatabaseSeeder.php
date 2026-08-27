@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
         Hostel_allocation::factory(10)->create();
 
         Admin::create([
-            'email' => 'admin@gamil.com',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'), 
         ]);
     }
