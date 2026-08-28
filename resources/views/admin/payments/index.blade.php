@@ -10,7 +10,7 @@
                 <thead class="table-light">
                     <tr>
                         <th>No</th>
-                        <th>Application ID</th>
+                        <th>Name</th>
                         <th>Payment Method</th>
                         <th>Amount</th>
                         <th>Payment Slip</th>
@@ -36,9 +36,9 @@
                             <td>{{ $payment->payment_date }}</td>
                             <td>
                                 @if ($payment->status == 'paid')
-                                    <span class="badge bg-success">{{ $payment->status }}</span>
+                                    <span class="badge bg-success">{{ $payment->status ?? '-' }}</span>
                                 @elseif($payment->status == 'pending')
-                                    <span class="badge bg-warning text-dark">{{ $payment->status }}</span>
+                                    <span class="badge bg-warning text-dark">{{ $payment->status ?? '-' }}</span>
                                 @else
                                     <span class="badge bg-danger">{{ $payment->status }}</span>
                                 @endif
@@ -54,4 +54,26 @@
                 </tbody>
             </table>
         </div>
+        <!-- SweetAlert2 CDN CDN ထည့်သွင်းရန် -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Success Message ပြသပေးမည့် Logic -->
+        @if(session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'အောင်မြင်ပါသည်!',
+                    text: '{{ session("success") }}',
+                    showConfirmButton: false,
+                    timer: 2500,
+                    timerProgressBar: true,
+                    background: '#ffffff',
+                    iconColor: '#28a745',
+                    customClass: {
+                        popup: 'rounded-4 shadow-lg',
+                        title: 'fw-bold text-dark'
+                    }
+                });
+            </script>
+        @endif
 @endsection

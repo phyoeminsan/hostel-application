@@ -46,14 +46,18 @@
                                 <span class="fw-bold fs-6 text-dark">{{ $payment->hostel_application->student_record->student->address ?? 'N/A' }}</span>
                             </div>
                         </div>
-
-                        <div class="mb-4 border-bottom pb-3">
-                            <small class="text-muted d-block">Selected Hostel</small>
-                            <span class="badge bg-info text-dark fs-6 mt-1">
-                                <i class="bi bi-house-door me-1"></i>{{ $payment->hostel_application->hostel->hostel_name ?? 'N/A' }}
-                            </span>
+                        <div class="row mb-3 border-bottom pb-2">
+                            <div class="col-6">
+                                <small class="text-muted d-block">Gender</small>
+                                <span class="fw-semibold text-dark">{{ $payment->hostel_application->hostel->gender ?? 'N/A' }}</span>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block">Selected Hostel</small>
+                                <span class="badge bg-info text-dark fs-6 mt-1">
+                                    <i class="bi bi-house-door me-1"></i>{{ $payment->hostel_application->hostel->hostel_name ?? 'N/A' }}
+                                </span>
+                            </div>
                         </div>
-
                         <!-- Transaction Section -->
                         <div class="row mb-3">
                             <div class="col-6">
@@ -87,13 +91,13 @@
                                 @method('PUT')
                                 <input type="hidden" name="status" value="paid">
                                 <button type="submit" class="btn btn-success fw-bold w-100 py-2 shadow-sm">
-                                    <i class="bi bi-check-circle me-1"></i> Approve / Mark as Paid
+                                    <i class="bi bi-check-circle me-1"></i> Mark as Paid
                                 </button>
                             </form>
 
                             {{-- Reject Button (Collapse Toggle) --}}
                             <button type="button" class="btn btn-danger fw-bold w-100 py-2 shadow-sm" data-bs-toggle="collapse" data-bs-target="#rejectReasonBox" aria-expanded="false">
-                                <i class="bi bi-x-circle me-1"></i> Reject / Paid Failed
+                                <i class="bi bi-x-circle me-1"></i> Failed
                             </button>
                         </div>
 

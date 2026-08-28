@@ -101,7 +101,8 @@ class FrontController extends Controller
             'payment_date'   => 'required|date',
         ]);
 
-        $payment = new Payment();
+        $payment = Payment::firstOrNew(['application_id' => $id]);
+
         $payment->application_id = $id;
         $payment->payment_method        = $request->payment_method;
         $payment->amount                = $request->amount;
@@ -110,6 +111,10 @@ class FrontController extends Controller
         $payment->status         = 'pending';
 
         if ($request->hasFile('payment_slip')) {
+            if ($payment->payment_slip && file_exists(public_path($payment->payment_slip))) {
+            unlink(public_path($payment->payment_slip));
+            }
+
             $file_name = time() . '.' . $request->payment_slip->extension();
             $request->payment_slip->move(public_path('images/payment_slips/'), $file_name);
             $payment->payment_slip = '/images/payment_slips/' . $file_name;

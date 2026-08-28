@@ -59,4 +59,6 @@ Route::group(['prefix' => 'backend','as' => 'backend.','middleware' => ['auth:ad
     Route::get('payments/{id}', [App\Http\Controllers\Admin\PaymentController::class, 'details'])->name('payment.details');
 
     Route::put('payments/{id}/status', [App\Http\Controllers\Admin\PaymentController::class, 'updateStatus'])->name('payment.updateStatus');
+
+    Route::get('hostel_alloation', [App\Http\Controllers\Admin\Hostel_allocationController::class, 'hostel_allocations'])->name('hostel_allocations');
 });

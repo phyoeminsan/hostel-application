@@ -37,15 +37,18 @@ class PaymentController extends Controller
             'reason' => 'nullable|string|max:255',
         ]);
 
-        $payment = Payment::where('payment_id', $id)->firstOrFail();
+        $payment = Payment::findOrFail($id);
         
         // Status Update လုပ်မည်
-        $payment->status = $request->status == 'paid' ? 'verified' : 'failed'; 
+        $payment->status = $request->status; 
         if ($request->status == 'failed') {
             $payment->reason = $request->reason;
+        } else {
+            $payment->reason = null;
         }
+
         $payment->save();
 
-        return redirect()->route('backend.payments')->with('success', 'Payment status updated successfully!');
+        return redirect()->route('backend.payments')->with('success', 'ငွေပေးချေမှု အခြေအနေကို အောင်မြင်စွာ ပြင်ဆင်ပြီးပါပြီ။');
     }
 }
