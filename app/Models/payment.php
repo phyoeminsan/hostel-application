@@ -27,4 +27,9 @@ class payment extends Model
     {
         return $this->belongsTo(Hostel_application::class, 'application_id', 'application_id');
     }
+
+    public function hostel_allocation()
+    {
+        return $this->hasOne(Hostel_allocation::class, 'payment_id', 'payment_id');
+    }
 }

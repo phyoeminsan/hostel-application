@@ -11,6 +11,7 @@ class hostel_allocation extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'hostel_allocations';
+    protected $primaryKey = 'allocation_id';
     protected $fillable = [
         'payment_id',
         'room_id',
@@ -18,4 +19,14 @@ class hostel_allocation extends Model
         'status',
         'description',
     ];
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class, 'payment_id');
+    }
+
+    public function room(){
+        return $this->belongsTo(Room::class, 'room_id');
+    }
+
 }

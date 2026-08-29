@@ -23,4 +23,8 @@ class room extends Model
     public function hostel(){
         return $this->belongsTo(Hostel::class, 'hostel_id');
     }
+    public function hostel_allocations()
+    {
+        return $this->hasMany(Hostel_allocation::class, 'room_id', 'room_id');
+    }
 }

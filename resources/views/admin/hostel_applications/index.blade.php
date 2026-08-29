@@ -1,5 +1,29 @@
 @extends('layouts.admin')
 @section('content')
+<style>
+/* Cursor မောက်စ်တင်လျှင် လက်ညှိုးပုံစံ ပေါ်စေရန် */
+.custom-hover-btn-success, 
+.custom-hover-btn-warning {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Active (အစိမ်းရောင်) Hover Effect */
+.custom-hover-btn-success:hover {
+    background-color: #198754 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 8px rgba(25, 135, 84, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Pending / Unactive (အဝါရောင်) Hover Effect */
+.custom-hover-btn-danger:hover {
+    background-color: #ff0720 !important;
+    color: #000000 !important;
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.35);
+    transform: translateY(-1px);
+}
+</style>
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
         <h2>Hostel Applications</h2>
     </div>
@@ -31,11 +55,11 @@
                         <td>{{ $hostel_application->apply_date }}</td>
                         <td>
                             @if ($hostel_application->status == 'approved')
-                                <span class="badge bg-success">{{ $hostel_application->status }}</span>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">{{ $hostel_application->status }}</span>
                             @elseif($hostel_application->status == 'pending')
-                                <span class="badge bg-warning text-dark">{{ $hostel_application->status }}</span>
+                                <span class="badge bg-warning-subtle text-dark border border-warning-subtle rounded-pill">{{ $hostel_application->status }}</span>
                             @else
-                                <span class="badge bg-danger">{{ $hostel_application->status }}</span>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill">{{ $hostel_application->status }}</span>
                             @endif
                         </td>
                         <td style="max-width: 150px;" class="text-truncate" title="{{ $hostel_application->reason }}">
@@ -43,7 +67,7 @@
                         </td>
                         <td>
                             <button type="button" 
-                                    class="btn btn-success btn-sm approve-btn" 
+                                    class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 approve-btn custom-hover-btn-success" 
                                     data-id="{{ $hostel_application->application_id }}">
                                 <i class="bi bi-check-lg"></i> Approved
                             </button>
@@ -53,7 +77,7 @@
                             </form>
 
                             <button type="button" 
-                                    class="btn btn-danger btn-sm reject-btn" 
+                                    class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-2 reject-btn custom-hover-btn-danger" 
                                     data-id="{{ $hostel_application->application_id }}">
                                 <i class="bi bi-x-lg"></i> Rejected
                             </button>

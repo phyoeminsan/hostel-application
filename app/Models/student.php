@@ -51,4 +51,5 @@ class student extends Authenticatable
     public function student_record(){
         return $this->hasMany(Student_record::class, 'student_id','student_id');
     }
+
 }

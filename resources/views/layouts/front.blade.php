@@ -79,7 +79,7 @@
                             <!-- Dropdown Header -->
                             <div class="px-3 py-2 bg-light border-bottom d-flex justify-content-between align-items-center rounded-top">
                                 <span class="fw-bold text-dark style-0-9">အကြောင်းကြားစာများ</span>
-                                <span class="badge bg-primary rounded-pill">Notification</span>
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">Notification</span>
                             </div>
 
                             <!-- Dropdown Body -->
@@ -90,19 +90,19 @@
                                         <span class="fw-bold text-primary small">Hostel Application</span>
                                         
                                         @if($userNotification->status == 'pending')
-                                            <span class="badge rounded-pill bg-warning text-dark">Pending</span>
+                                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill">Pending</span>
                                         @elseif($userNotification->status == 'approved')
                                             @if(optional($userNotification->payment)->status == 'pending')
-                                                <span class="badge rounded-pill bg-warning text-dark">Payment Verifying</span>
+                                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill">Payment Verifying</span>
                                             @elseif(optional($userNotification->payment)->status == 'paid' || optional($userNotification->payment)->status == 'verified')
-                                                <span class="badge rounded-pill bg-success">Completed</span>
+                                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Completed</span>
                                             @elseif(optional($userNotification->payment)->status == 'failed')
-                                                <span class="badge rounded-pill bg-danger">Payment failed</span>
+                                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill">Payment failed</span>
                                             @else
-                                                <span class="badge rounded-pill bg-success">Approved</span>
+                                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Approved</span>
                                             @endif
                                         @elseif($userNotification->status == 'rejected')
-                                            <span class="badge rounded-pill bg-danger">Rejected</span>
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill">Rejected</span>
                                         @endif
                                     </div>
                                     
@@ -129,13 +129,30 @@
                                         {{-- 2. Payment လုပ်ပြီး Admin စစ်ဆေးနေချိန် (Button ဖျောက်မည်) --}}
                                         @elseif($paymentStatus == 'pending')
                                             <div class="p-2 bg-light border rounded border-warning">
-                                                <small class="d-block fw-bold text-warning mb-1">
-                                                    <i class="bi bi-clock-history me-1"></i> Admin မှ စိစစ်နေပါသည်
-                                                </small>
-                                                <small class="text-muted d-block" style="font-size: 0.78rem;">
-                                                    သင်၏ ငွေပေးချေမှုကို စစ်ဆေးနေပါသည်။ စိစစ်ပြီးပါက အခန်းနေရာကို ထပ်မံ အကြောင်းကြားပေးပါမည်။
-                                                </small>
-                                            </div>
+                                                @if(optional($userNotification->payment)->reason)
+                                                    {{-- ယခင်က Failed ဖြစ်ခဲ့ဖူးပြီး ပြန်လည်တင်ပြထားပါက ပြသမည့် Noti --}}
+                                                    <div class="d-flex align-items-start">
+                                                        <i class="bi bi-clock-history fs-5 me-2 text-warning"></i>
+                                                        <div>
+                                                            <h6 class="fw-bold mb-1 style-0-8 text-warning">ငွေပေးချေမှုကို ပြန်လည်စိစစ်နေပါသည်။</h6>
+                                                            <p class="mb-0 text-muted style-0-7" style="line-height: 1.4;">
+                                                                ယခင်က ပယ်ဖျက်ခံထားရသော ငွေပေးချေမှုကို ပြန်လည်ပေးပို့ထားပြီး ဖြစ်ပါသဖြင့် ကျောင်းဘက် မှ ပြန်လည်စစ်ဆေးနေပါသည်။ ခေတ္တစောင့်ဆိုင်းပေးပါ။
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    {{-- ပထမအကြိမ် ပေးချေထားပြီး စစ်ဆေးနေဆဲ Noti --}}
+                                                    <div class="d-flex align-items-start">
+                                                        <i class="bi bi-hourglass-split fs-5 me-2 text-info"></i>
+                                                        <div>
+                                                            <h6 class="fw-bold mb-1 style-0-8 text-info">ငွေပေးချေမှုကို စိစစ်နေပါသည်။</h6>
+                                                            <p class="mb-0 text-muted style-0-7" style="line-height: 1.4;">
+                                                                သင်၏ ငွေပေးချေမှု အချက်အလက်များကို ကျောင်းဘက် မှ စစ်ဆေးနေပါသည်။
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>          
 
                                         {{-- 3. Payment Rejected ဖြစ်ပါက (Button ပြန်ဖော်မည်) --}}
                                         @elseif($paymentStatus == 'failed')
@@ -160,9 +177,18 @@
 
                                         {{-- 4. Payment Completed --}}
                                         @elseif($paymentStatus == 'paid' || $paymentStatus == 'verified')
-                                            <p class="text-success small mb-0">
-                                                <i class="bi bi-check-circle-fill me-1"></i> ငွေပေးချေမှု အတည်ပြုပြီးပါပြီ။ အဆောင်အခန်း နေရာ ချထားပေးပြီးပါပြီ။
-                                            </p>
+                                            <div class="p-3 border-bottom bg-light-subtle">
+                                                <!-- ငွေပေးချေမှု အတည်ပြုပြီးကြောင်း စာသား -->
+                                                <p class="text-success small mb-2 fw-semibold">
+                                                    <i class="bi bi-check-circle-fill me-1"></i> ငွေပေးချေမှု အတည်ပြုပြီးပါပြီ။ အဆောင်အခန်း နေရာအတွက်ပါ ချထားပေးပြီးပါပြီ။
+                                                </p>
+
+                                                <!-- သီးသန့် ခလုတ် (Button) -->
+                                                <a href="{{ route('student.myAllocation') }}" class="btn btn-sm btn-outline-primary w-100 rounded-pill d-flex align-items-center justify-content-center gap-1 shadow-sm">
+                                                    <i class="bi bi-house-door me-1"></i> အဆောင်အခန်းနေရာ ကြည့်ရန်
+                                                    <i class="bi bi-chevron-right small"></i>
+                                                </a>
+                                            </div>
                                         @endif
 
                                     @elseif($userNotification->status == 'rejected')

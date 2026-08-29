@@ -39,4 +39,5 @@ class hostel_application extends Model
         return $this->hasOne(Payment::class, 'application_id', 'application_id');
     }
 
+
 }

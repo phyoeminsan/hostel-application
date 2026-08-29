@@ -17,6 +17,8 @@ Route::middleware(['auth:student'])->group(function () {
     Route::get('/hostel_applications/{id}/payment', [App\Http\Controllers\FrontController::class, 'showPaymentForm'])->name('hostels.payment');
 
     Route::post('/hostel_applications/{id}/payment', [App\Http\Controllers\FrontController::class, 'storePayment'])->name('hostels.payment.store');
+
+    Route::get('hostel_allocations', [App\Http\Controllers\FrontController:: class, 'myAllocation'])->name('student.myAllocation');
 });
 
 Route::prefix('admin')->group(function () {
@@ -60,5 +62,11 @@ Route::group(['prefix' => 'backend','as' => 'backend.','middleware' => ['auth:ad
 
     Route::put('payments/{id}/status', [App\Http\Controllers\Admin\PaymentController::class, 'updateStatus'])->name('payment.updateStatus');
 
-    Route::get('hostel_alloation', [App\Http\Controllers\Admin\Hostel_allocationController::class, 'hostel_allocations'])->name('hostel_allocations');
+    Route::get('hostel_alloations', [App\Http\Controllers\Admin\Hostel_allocationController::class, 'hostel_allocations'])->name('hostel_allocations');
+    Route::get('hostel_allocations/create', [App\Http\Controllers\Admin\Hostel_allocationController::class, 'create'])->name('hostel_allocations.create');
+    Route::post('hostel_allocations', [App\Http\Controllers\Admin\Hostel_allocationController:: class, 'store'])->name('hostel_allocations.store');
+
+    Route::post('hostel_allocations/{id}/active', [App\Http\Controllers\Admin\Hostel_allocationController:: class, 'active'])->name('hostel_allocations.active');
+    Route::post('hostel_allocations/{id}/unactive', [App\Http\Controllers\Admin\Hostel_allocationController:: class, 'unactive'])->name('hostel_allocations.unactive');
 });
+

@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\Hostel_application; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\hostel_allocation;
 
 class FrontController extends Controller
 {
@@ -123,5 +124,24 @@ class FrontController extends Controller
         $payment->save();
 
         return redirect()->back()->with('success', 'ငွေပေးချေမှု အချက်အလက်များ အောင်မြင်စွာ ပေးပို့ပြီးပါပြီ။ ကျောင်းဘက်ကနေ မှ စိစစ်ပြီး အဆောင်အခန်း နေရာ ချထားပေးမှု အခြေအနေအား ထပ်မံ အကြောင်းကြားပေးပါမည်။');
+    }
+
+    public function myAllocation()
+    {
+        // Login ဝင်ထားသော Student ၏ ID (သို့မဟုတ် Auth User ID) ကို ယူမည်
+        $studentId = Auth::id(); // သို့မဟုတ် Auth::guard('student')->id() 
+
+        // Login ဝင်ထားသည့် Student ၏ Allocation Data ကို ရှာမည်
+        $hostel_allocation = Hostel_allocation::whereHas('payment.hostel_application.student_record', function ($q) use ($studentId) {
+            $q->where('student_id', $studentId); // user_id အစား student_id ဟု ပြင်ထားပါသည်
+        })
+        ->with([
+            'room.hostel', 
+            'payment.hostel_application'
+        ])
+        ->latest()
+        ->first();
+
+        return view('front.students.my_allocation', compact('hostel_allocation'));
     }
 }
