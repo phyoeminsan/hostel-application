@@ -39,5 +39,8 @@ class hostel_application extends Model
         return $this->hasOne(Payment::class, 'application_id', 'application_id');
     }
 
-
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id', 'room_id');
+    }
 }

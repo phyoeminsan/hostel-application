@@ -1,5 +1,7 @@
 @extends('layouts.admin')
+
 @section('content')
+<div class="container-fluid px-4 py-3">
     @if (session('success'))
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
@@ -12,39 +14,81 @@
             });
         </script>
     @endif
-    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-        <h2>Majors</h2>
-        <a href="{{ route('backend.majors.create') }}" class="btn btn-primary">
-            <i class="fa-solid fa-plus me-1"></i> Add New
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-1">Majors</h3>
+        </div>
+        <a href="{{ route('backend.majors.create') }}" class="btn btn-primary px-3 py-2 rounded-pill fw-semibold shadow-sm">
+            <i class="fa-solid fa-plus me-1"></i> Add New Major
         </a>
     </div>
 
-    <div class="card shadow-sm p-4 bg-white rounded">
-        <table class="table table-hover align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>No</th>
-                    <th>Major Name</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($majors as $major)
+    <!-- Table Card Container -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-header bg-white py-3 px-4 border-0 d-flex align-items-center justify-content-between">
+            <h5 class="fw-bold mb-0 text-dark">
+                <i class="fa-solid fa-graduation-cap me-2 text-primary"></i>Major List
+            </h5>
+            <span class="badge bg-light text-muted fw-normal border">
+                Total Records: {{ method_exists($majors, 'total') ? $majors->total() : count($majors) }}
+            </span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-borderless table-hover align-middle mb-0">
+                <thead class="bg-light border-bottom text-muted small text-uppercase">
                     <tr>
-                        <td>{{ $i++ }}</td>
-                        <td>{{ $major->major_name }}</td>
-                        <td class="text-end">
-                            <a href="{{ route('backend.majors.edit', $major->major_id) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-edit"></i></a>
-                            <button class="btn btn-sm btn-outline-danger delete" data-id="{{ $major->major_id }}"><i class="fa-solid fa-trash"></i></button>
-                        </td>
+                        <th class="ps-4 py-3" style="width: 80px;">NO</th>
+                        
+                        <th class="py-3 text-center">MAJOR NAME</th>
+                        
+                        <th class="pe-4 py-3 text-end" style="width: 150px;">ACTIONS</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $majors->links() }}
+                </thead>
+                <tbody class="divide-y">
+                    @forelse ($majors as $index => $major)
+                        <tr class="border-bottom-faint">
+                            <td class="ps-4 py-3 text-muted fw-semibold">
+                                {{ method_exists($majors, 'firstItem') && $majors->firstItem() ? $majors->firstItem() + $index : $index + 1 }}
+                            </td>
+                            
+                            <td class="py-3 text-center">
+                                <span class="fw-bold text-dark fs-6">{{ $major->major_name }}</span>
+                            </td>
+                            
+                            <td class="pe-4 py-3 text-end">
+                                <div class="btn-group gap-1">
+                                    <a href="{{ route('backend.majors.edit', $major->major_id) }}" 
+                                    class="btn btn-sm btn-light border text-secondary rounded-2 px-2 py-1 shadow-sm" 
+                                    title="Edit">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-light border text-danger rounded-2 px-2 py-1 shadow-sm delete" 
+                                            data-id="{{ $major->major_id }}" 
+                                            title="Delete">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center py-5 text-muted">
+                                <i class="fa-regular fa-folder-open fs-2 d-block mb-2 opacity-50"></i>
+                                No major records found.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        @if(method_exists($majors, 'hasPages') && $majors->hasPages())
+            <div class="card-footer bg-white border-0 py-3 px-4">
+                {{ $majors->links() }}
+            </div>
+        @endif
     </div>
 
     <!-- Hidden Delete Form -->
@@ -52,16 +96,19 @@
         @csrf
         @method('DELETE')
     </form>
+</div>
 @endsection
+
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
+        // Delete Confirmation Modal
         $('tbody').on('click', '.delete', function(e) {
             e.preventDefault();
             
             let id = $(this).data('id');
-            let url = '/backend/majors/' + id;
+            let url = '{{ route("backend.majors.destroy", ":id") }}'.replace(':id', id);
 
             Swal.fire({
                 title: 'သေချာပါသလား?',
@@ -72,7 +119,10 @@
                 confirmButtonColor: '#dc3545',
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'ဖျက်မည်',
-                cancelButtonText: 'မဖျက်တော့ပါ'
+                cancelButtonText: 'မဖျက်တော့ပါ',
+                customClass: {
+                    popup: 'rounded-4'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     $('#deleteForm').attr('action', url).submit();

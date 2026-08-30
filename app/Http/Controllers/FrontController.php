@@ -26,14 +26,22 @@ class FrontController extends Controller
 
     public function showApplyForm($id){
 
-        $hostel = Hostel::find($id);
+        $hostel = Hostel::findOrFail($id);
 
         // 1. Login ဝင်ထားသော Student ကို ရယူခြင်း
         $studentUser = Auth::guard('student')->user();
-        $student = $studentUser->student_id ?? Auth::id();
+        $studentId = $studentUser->student_id ?? Auth::id();
+
+        $existingApplication = Hostel_application::where('record_id', $studentId)
+        ->whereIn('status', ['pending', 'approved', 'rejected'])
+        ->first();
+
+        if ($existingApplication) {
+            return redirect()->back()->with('error', 'သင်သည် အဆောင်လျှောက်ထားပြီးဖြစ်ပါသဖြင့် ထပ်မံလျှောက်ထား၍ မရတော့ပါ။');
+        }
         
         $student_record = Student_record::with(['student', 'academic_year', 'year'])
-                    ->where('student_id', $student)
+                    ->where('student_id', $studentId)
                     ->latest('record_id')
                     ->first();
 

@@ -37,7 +37,7 @@
                         </div>
                         <h3 class="feature-title">High-Speed Wi-Fi</h3>
                         <p class="feature-text">
-                        စာလေ့လာရန်နှင့် အင်တာနက်အသုံးပြုရန်အတွက် မြန်နှုန်းမြင့် Wi-Fi စနစ် တပ်ဆင်ပေးထားပါသည်။
+                            စာလေ့လာရန်နှင့် အင်တာနက်အသုံးပြုရန်အတွက် မြန်နှုန်းမြင့် Wi-Fi စနစ် တပ်ဆင်ပေးထားပါသည်။
                         </p>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                         </div>
                         <h3 class="feature-title">24/7 Security</h3>
                         <p class="feature-text">
-                        CCTV ကင်မရာများနှင့် လုံခြုံရေးဝန်ထမ်းများဖြင့် ၂၄ နာရီပတ်လုံး လုံခြုံရေးရယူပေးထားပါသည်။
+                            CCTV ကင်မရာများနှင့် လုံခြုံရေးဝန်ထမ်းများဖြင့် ၂၄ နာရီပတ်လုံး လုံခြုံရေးရယူပေးထားပါသည်။
                         </p>
                     </div>
                 </div>
@@ -61,9 +61,9 @@
                         <div class="icon-box icon-power">
                             <i class="fa-solid fa-bolt"></i>
                         </div>
-                        <h3 class="feature-title">Power Backup</h3>
+                        <h3 class="feature-title">Solar Power System</h3>
                         <p class="feature-text">
-                        မီးပျက်ချိန်များတွင်လည်း စာကျက်မပျက်စေရန် မီးစက်/Generator စနစ်များ ထောက်ပံ့ထားပါသည်။
+                            မီးပျက်ချိန်များတွင်လည်း စာကျက်မပျက်စေရန် ဆိုလာတပ်ဆင် ထောက်ပံ့ပေးထားပါသည်။
                         </p>
                     </div>
                 </div>
@@ -71,7 +71,6 @@
         </div>
     </section>
 
-     <!-- Hostels List Section (Hostel Table Basis) -->
     <section id="hostels" class="py-5 bg-light">
         <div class="container py-4">
             <div class="text-center mb-5">
@@ -83,13 +82,10 @@
                 @foreach ($hostels as $hostel)
                     <div class="col-md-4">
                         @php
-                            // 1. Auth မှ Student ၏ gender (စာလုံးသေး) ကို ယူပါ
                             $studentGender = Auth::guard('student')->user()->gender ?? Auth::user()->gender ?? null;
-                            
-                            // 2. Hostel ၏ gender (စာလုံးသေး) ကို ယူပါ
+    
                             $hostelGender = $hostel->gender ?? null;
 
-                            // 3. Gender Mismatch ဖြစ်မဖြစ် စစ်ဆေးခြင်း
                             $isGenderMismatch = false;
                             
                             if ($studentGender && $hostelGender && strtolower($hostelGender) !== 'all') {
@@ -113,17 +109,25 @@
 
                                 <div class="mt-auto">
                                     @if (!Auth::guard('student')->check())
-                                        <!-- Login မဝင်ထားပါက SweetAlert Box ခေါ်မည့် Function ကို ချိတ်မည် -->
+                                        <!-- Login မဝင်ထားပါက -->
                                         <button type="button" class="btn btn-secondary w-100 rounded-pill btn-apply" onclick="showLoginAlert()">
                                             Apply Hostel
                                         </button>
+                                    
+                                    @elseif (isset($existingApplication))
+                                        <!-- လျှောက်ထားပြီးသား ဖြစ်နေပါက (Pending, Approved, Rejected ကြိုက်တာဖြစ်ဖြစ်) -->
+                                        <button type="button" class="btn btn-warning w-100 rounded-pill">
+                                            Already Applied ({{ ucfirst($existingApplication->status) }})
+                                        </button>
+
                                     @elseif ($isGenderMismatch)
-                                        <!-- Gender မတူလျှင် -->
-                                        <a href="{{ route('hostel.apply', $hostel->hostel_id) }}" class="btn btn-danger w-100 rounded-pill">
+                                        <!-- Gender မတူလျှင် SweetAlert ပြမည့် function ကို ခေါ်မည် -->
+                                        <button type="button" class="btn btn-danger w-100 rounded-pill" onclick="showGenderAlert('{{ $hostel->gender }}')">
                                             Not Allowed ({{ $hostel->gender }} Only)
-                                        </a>
+                                        </button>
+
                                     @else
-                                        <!-- Login ဝင်ထားပြီး Gender ပါ တူလျှင် -->
+                                        <!-- Login ဝင်ထားပြီး၊ လျှောက်မထားရသေးပါက၊ Gender လည်း တူပါက -->
                                         <a href="{{ route('hostel.apply', $hostel->hostel_id) }}" class="btn btn-primary w-100 rounded-pill btn-apply">
                                             Apply Hostel
                                         </a>
@@ -175,6 +179,16 @@
                         // OK နှိပ်ပါက Student Login Route သို့ သွားမည်
                         window.location.href = "/login";
                     }
+                });
+            }
+
+            function showGenderAlert(hostelGender) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ရွေးချယ်၍ မရနိုင်ပါ!',
+                    text: 'ဤအဆောင်သည် (' + hostelGender + ') သီးသန့်ဖြစ်ပါသဖြင့် သင်၏ Gender နှင့် မကိုက်ညီပါ။',
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: 'နားလည်ပါပြီ'
                 });
             }
             </script>

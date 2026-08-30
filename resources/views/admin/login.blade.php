@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal - Login</title>
+    <link rel="icon" type="image/png" href="{{ asset('front-assets/images/circle.png') }}">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -22,6 +23,7 @@
         .main-card {
             width: 100%;
             max-width: 960px;
+            min-height: 620px;
             border: none;
             border-radius: 24px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
@@ -29,7 +31,6 @@
             background: #ffffff;
             position: relative;
         }
-        /* Back Button Style */
         .btn-back {
             display: inline-flex;
             align-items: center;
@@ -44,9 +45,8 @@
             color: #083372;
             transform: translateX(-3px);
         }
-        /* Left Section Style */
         .login-section {
-            padding: 40px 50px;
+            padding: 55px 50px;
         }
         .brand-title {
             font-size: 2.2rem;
@@ -77,7 +77,6 @@
             background-color: #06295a;
             color: #ffffff;
         }
-        /* Right Section Style */
         .gradient-section {
             background-image: url('{{ asset("front-assets/images/Faculty.jpg") }}');
             background-size: cover;
@@ -85,12 +84,28 @@
             background-repeat: no-repeat;
             min-height: 100%;
         }
+        .main-card {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 620px; /* Card အမြင့်ကို ဆွဲဆန့်ပေးရန် min-height ထည့်ထားပါသည် */
+            border: none;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            background: #ffffff;
+            position: relative;
+        }
+
+        /* Padding ကို တိုးပေးခြင်းဖြင့် Form အတွင်းပိုင်း ကျယ်ပြန့်စေပါသည် */
+        .login-section {
+            padding: 55px 50px; 
+        }
     </style>
 </head>
 <body>
 
     <div class="card main-card">
-        <div class="row g-0">
+        <div class="row g-0 h-100">
             <!-- Left Side: Login Form -->
             <div class="col-lg-6 login-section d-flex flex-column justify-content-between">
                 <div>
@@ -101,7 +116,7 @@
                         </a>
                     </div>
 
-                    <div class="my-3 text-center">
+                    <div class="my-4 text-center">
                         <h1 class="brand-title mb-1">ADMIN</h1>
                         <p class="text-muted small">Welcome back to the Student Hostel Management System</p>
                     </div>
@@ -120,7 +135,7 @@
                         </div>
 
                         <!-- Password Field -->
-                        <div class="mb-2">
+                        <div class="mb-3">
                             <label for="password" class="form-label small fw-semibold text-dark">Password</label>
                             <div class="position-relative">
                                 <input type="password" name="password" id="password" class="form-control px-3 py-2 pe-5" placeholder="Password">
@@ -153,7 +168,7 @@
                     </form>
                 </div>
 
-                <div class="mt-4 text-center">
+                <div class="mt-5 text-center">
                     <small class="text-muted">Students Hostel Management System &copy; {{ date('Y') }}</small>
                 </div>
             </div>
@@ -164,19 +179,35 @@
         </div>
     </div>
 
-    <!-- Alert Scripts -->
+<!-- Alert Scripts -->
+    {{-- ၁။ Email သို့မဟုတ် Password မဖြည့်ခဲ့ပါက ပြသမည် --}}
     @if ($errors->has('email') || $errors->has('password'))
-        <script>
-            Swal.fire({
-                icon: 'warning',
-                title: 'အချက်အလက် လိုအပ်နေပါသည်!',
-                text: 'ကျေးဇူးပြု၍ Email သို့မဟုတ် Username နှင့် Password ဖြည့်သွင်းပေးပါ',
-                confirmButtonColor: '#f39c12',
-                confirmButtonText: 'နားလည်ပါပြီ'
-            });
-        </script>
+        @if ($errors->first('password') === 'လျှို့ဝှက်နံပါတ်သည် အနည်းဆုံး ၈ လုံး ရှိရပါမည်။')
+            {{-- Password ၈ လုံး မပြည့်ပါက ပြသမည် --}}
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Password လိုအပ်ချက် မပြည့်မီပါ!',
+                    text: '{{ $errors->first("password") }}',
+                    confirmButtonColor: '#da1010',
+                    confirmButtonText: 'နားလည်ပါပြီ'
+                });
+            </script>
+        @else
+            {{-- မူလ အတိုင်း Email သို့မဟုတ် Password မဖြည့်ခဲ့ပါက ပြသမည် --}}
+            <script>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'အချက်အလက် လိုအပ်နေပါသည်!',
+                    text: 'ကျေးဇူးပြု၍ Email သို့မဟုတ် Username နှင့် Password ကိုဖြည့်သွင်းပေးပါ',
+                    confirmButtonColor: '#f39c12',
+                    confirmButtonText: 'နားလည်ပါပြီ'
+                });
+            </script>
+        @endif
     @endif
     
+    {{-- ၂။ Login အချက်အလက် မှားယွင်းပါက ပြသမည် --}}
     @if ($errors->has('auth_failed'))
         <script>
             Swal.fire({

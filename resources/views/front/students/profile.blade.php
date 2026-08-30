@@ -76,6 +76,7 @@
         
         @if(session('success'))
             <div class="alert alert-success border-0 rounded-3 mb-4 text-center">
+                <i class="fas fa-check-circle"></i>
                 {{ session('success') }}
             </div>
         @endif
@@ -112,11 +113,11 @@
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
                     <label class="form-label fw-bold text-dark small">Roll No</label>
-                    <input type="text" class="form-control form-control-custom bg-light" value="{{ $student->roll_no }}" readonly>
+                    <input type="text" class="form-control form-control-custom bg-light" value="{{ $student->roll_no }}" disabled>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold text-dark small">Gender</label>
-                    <select name="gender" class="form-select form-select-custom">
+                    <select name="gender" class="form-select form-select-custom bg-light" disabled>
                         <option value="Male" {{ old('gender', $student->gender) == 'Male' ? 'selected' : '' }}>Male</option>
                         <option value="Female" {{ old('gender', $student->gender) == 'Female' ? 'selected' : '' }}>Female</option>
                     </select>
@@ -183,7 +184,12 @@
                     <div class="card card-body border-0 bg-light rounded-3 p-3">
                         <div class="mb-2">
                             <label class="form-label fw-semibold text-dark small">New Password</label>
-                            <input type="password" name="password" class="form-control form-control-custom" placeholder="Leave blank if no change">
+                            <div class="input-group">
+                                <input type="password" name="password" id="passwordInput" class="form-control form-control-custom border-end-0" placeholder="Leave blank if no change">
+                                <button type="button" class="input-group-text input-group-text-custom border-start-0 rounded-end-3 bg-white" onclick="togglePasswordVisibility()">
+                                    <i class="bi bi-eye-slash-fill" id="toggleIcon"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -207,6 +213,21 @@
         };
         if(event.target.files[0]){
             reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+
+        function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('passwordInput');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('bi-eye-slash-fill');
+            toggleIcon.classList.add('bi-eye-fill');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('bi-eye-fill');
+            toggleIcon.classList.add('bi-eye-slash-fill');
         }
     }
 </script>

@@ -1,5 +1,7 @@
 @extends('layouts.admin')
+
 @section('content')
+<div class="container-fluid px-4 py-3">
     @if(session('success'))
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
@@ -12,59 +14,157 @@
             });
         </script>
     @endif
-    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-        <h2>Student Management</h2>
-        <a href="{{ route('backend.students.create') }}" class="btn btn-primary">
-            <i class="fa-solid fa-plus me-1"></i> Add New
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-1">Student Management</h3>
+        </div>
+        <a href="{{ route('backend.students.create') }}" class="btn btn-primary px-3 py-2 rounded-pill fw-semibold shadow-sm">
+            <i class="fa-solid fa-plus me-1"></i> Add New Student
         </a>
     </div>
 
-    <div class="card shadow-sm p-4 bg-white rounded">
-        <table class="table table-hover align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>No</th>
-                    <th>Roll No</th>
-                    <th>Name</th>
-                    <th>Major</th>
-                    <th>Gender</th>
-                    <th>NRC</th>
-                    <th>Phone</th>
-                    <th style="white-space: nowrap; width: 130px">Date Of Brith</th>
-                    <th>Phone No</th>
-                    <th>Address</th>
-                    <th>Profile</th>
-                    <th style="width: 180px;">Email</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($students as $student)
+    <!-- Main Table Card Container -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        
+        <!-- Table Header Banner -->
+        <div class="card-header bg-white py-3 px-4 border-0 d-flex align-items-center justify-content-between">
+            <h5 class="fw-bold mb-0 text-dark">
+                <i class="fa-solid fa-users me-2 text-primary"></i>Student List
+            </h5>
+            <span class="badge bg-light text-muted fw-normal border">
+                Total Students: {{ method_exists($students, 'total') ? $students->total() : count($students) }}
+            </span>
+        </div>
+
+        <!-- Table Responsive Container -->
+        <div class="table-responsive">
+            <table class="table table-borderless table-hover align-middle mb-0">
+                <thead class="bg-light border-bottom text-muted small text-uppercase">
                     <tr>
-                        <td>{{ $i++ }}</td>
-                        <td>{{ $student->roll_no }}</td>
-                        <td>{{ $student->name }}</td>
-                        <td>{{ $student->major->major_name }}</td>
-                        <td>{{ $student->gender }}</td>
-                        <td>{{ $student->nrc }}</td>
-                        <td>{{ $student->phone_no }}</td>
-                        <td style="white-space: nowrap;">{{ $student->date_of_birth }}</td>
-                        <td>{{ $student->phone_no }}</td>
-                        <td>{{ $student->address }}</td>
-                        <td><img src="{{ $student->profile }}" alt="" width="40" height="40"></td>
-                        <td>{{ $student->email }}</td>
-                        <td class="text-end">
-                            <a href="{{ route('backend.students.edit', $student->student_id) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-edit"></i></a>
-                            <button class="btn btn-sm btn-outline-danger delete" data-id="{{ $student->student_id }}"><i class="fa-solid fa-trash"></i></button>
-                        </td>
+                        <th class="ps-4 py-3 text-center" style="width: 60px;">No</th>
+                        <th class="py-3 text-center" style="width: 80px;">Profile</th>
+                        <th class="py-3">Roll No</th>
+                        <th class="py-3">Name</th>
+                        <th class="py-3">Major</th>
+                        <th class="py-3 text-center">Gender</th>
+                        <th class="py-3">NRC</th>
+                        <th class="py-3">Phone</th>
+                        <th class="py-3 text-center" style="white-space: nowrap;">DATE OF BIRTH</th>
+                        <th class="py-3">Email</th>
+                        <th class="py-3">Address</th>
+                        <th class="pe-4 py-3 text-end" style="width: 120px;">Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $students->links() }}
+                </thead>
+                <tbody class="divide-y">
+                    @forelse ($students as $index => $student)
+                        <tr class="border-bottom-faint">
+                            <!-- Serial No -->
+                            <td class="ps-4 py-3 text-center text-muted fw-semibold">
+                                {{ method_exists($students, 'firstItem') && $students->firstItem() ? $students->firstItem() + $index : $index + 1 }}
+                            </td>
+                            
+                            <!-- Profile Thumbnail -->
+                            <td class="py-3 text-center">
+                                @if($student->profile)
+                                    <img src="{{ asset($student->profile) }}" alt="{{ $student->name }}" class="rounded-circle border shadow-sm object-fit-cover" width="40" height="40">
+                                @else
+                                    <div class="rounded-circle bg-light border d-inline-flex align-items-center justify-content-center text-secondary shadow-sm" style="width: 40px; height: 40px;">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                @endif
+                            </td>
+
+                            <!-- Roll No -->
+                            <td class="py-3">
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2.5 py-1 fw-semibold">
+                                    {{ $student->roll_no }}
+                                </span>
+                            </td>
+
+                            <!-- Name -->
+                            <td class="py-3">
+                                <span class="fw-bold text-dark fs-6">{{ $student->name }}</span>
+                            </td>
+
+                            <!-- Major -->
+                            <td class="py-3 text-secondary small">
+                                <i class="fa-solid fa-graduation-cap me-1 text-muted opacity-50"></i>{{ $student->major->major_name ?? 'N/A' }}
+                            </td>
+
+                            <!-- Gender -->
+                            <td class="py-3 text-center">
+                                @if(strtolower($student->gender) == 'male')
+                                    <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-2 py-1">
+                                        <i class="fa-solid fa-mars me-1"></i>Male
+                                    </span>
+                                @elseif(strtolower($student->gender) == 'female')
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1">
+                                        <i class="fa-solid fa-venus me-1"></i>Female
+                                    </span>
+                                @else
+                                    <span class="text-muted small">{{ $student->gender }}</span>
+                                @endif
+                            </td>
+
+                            <!-- NRC -->
+                            <td class="py-3 text-secondary small">{{ $student->nrc }}</td>
+
+                            <!-- Phone -->
+                            <td class="py-3 text-secondary small" style="white-space: nowrap;">
+                                <i class="fa-solid fa-phone me-1 text-muted opacity-50"></i>{{ $student->phone_no }}
+                            </td>
+
+                            <!-- DOB -->
+                            <td class="py-3 text-center text-secondary small" style="white-space: nowrap;">
+                                {{ $student->date_of_birth }}
+                            </td>
+
+                            <!-- Email -->
+                            <td class="py-3 text-secondary small">
+                                <i class="fa-regular fa-envelope me-1 text-muted opacity-50"></i>{{ $student->email }}
+                            </td>
+
+                            <!-- Address -->
+                            <td class="py-3 text-secondary small text-truncate" style="max-width: 150px;" title="{{ $student->address }}">
+                                <i class="fa-solid fa-location-dot me-1 text-danger opacity-75"></i>
+                                {{ $student->address }}
+                            </td>
+
+                            <!-- Actions -->
+                            <td class="pe-4 py-3 text-end">
+                                <div class="btn-group gap-1">
+                                    <a href="{{ route('backend.students.edit', $student->student_id) }}" 
+                                       class="btn btn-sm btn-light border text-secondary rounded-2 px-2 py-1 shadow-sm" 
+                                       title="Edit Student">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-light border text-danger rounded-2 px-2 py-1 shadow-sm delete" 
+                                            data-id="{{ $student->student_id }}" 
+                                            title="Delete Student">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="12" class="text-center py-5 text-muted">
+                                <i class="fa-regular fa-folder-open fs-2 d-block mb-2 opacity-50"></i>
+                                No student records found.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Section -->
+        @if(method_exists($students, 'hasPages') && $students->hasPages())
+            <div class="card-footer bg-white border-0 py-3 px-4">
+                {{ $students->links() }}
+            </div>
+        @endif
     </div>
 
     <!-- Hidden Delete Form -->
@@ -72,11 +172,15 @@
         @csrf
         @method('DELETE')
     </form>
+</div>
 @endsection
+
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
+
+        // SweetAlert Delete Modal Handler
         $('tbody').on('click', '.delete', function(e) {
             e.preventDefault();
             
@@ -92,7 +196,10 @@
                 confirmButtonColor: '#dc3545',
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'ဖျက်မည်',
-                cancelButtonText: 'မဖျက်တော့ပါ'
+                cancelButtonText: 'မဖျက်တော့ပါ',
+                customClass: {
+                    popup: 'rounded-4'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     $('#deleteForm').attr('action', url).submit();
@@ -101,6 +208,4 @@
         });
     });
 </script>
-@endsection
-
-  
+@endsectionဖ

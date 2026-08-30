@@ -1,75 +1,124 @@
 @extends('layouts.admin')
+
 @section('content')
-    @if(session('success'))
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            Swal.fire({
-                title: "အောင်မြင်ပါသည်။",
-                text: "{{ session('success') }}",
-                icon: "success",
-                confirmButtonText: "လက်ခံသည်",
-                confirmButtonColor: "#0d6efd"
-            });
-        </script>
-    @endif
-    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-        <h2>Student Record</h2>
-        <a href="{{ route('backend.student_records.create') }}" class="btn btn-primary">
-            <i class="fa-solid fa-plus me-1"></i> Add New
-        </a>
+<!-- Top Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark mb-0">Student Records</h2>
+    <a href="{{ route('backend.student_records.create') }}" class="btn btn-primary rounded-pill px-3 py-2 shadow-sm">
+        <i class="fa-solid fa-plus me-1"></i> Add New Record
+    </a>
+</div>
+
+<!-- Main List Card -->
+<div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+    <!-- Card Inner Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+            <i class="fa-solid fa-file-signature text-primary fs-4 me-2"></i>
+            <h5 class="fw-bold mb-0 text-dark">Student Record List</h5>
+        </div>
+        <span class="badge bg-light text-secondary border px-3 py-2 rounded-3 fw-normal">
+            Total Records: {{ $student_records->total() ?? count($student_records) }}
+        </span>
     </div>
 
-     <div class="card shadow-sm p-4 bg-white rounded">
-        <table class="table table-hover align-middle">
-            <thead class="table-light">
+    <!-- Data Table -->
+    <div class="table-responsive">
+        <table class="table table-borderless align-middle mb-0">
+            <thead class="text-muted border-bottom text-uppercase fs-7">
                 <tr>
-                    <th>No</th>
-                    <th>Academic Year</th>
-                    <th>Year</th>
-                    <th>Student</th>
-                    <th>Major</th>
-                    <th class="text-end">Actions</th>
+                    <th class="pb-3" style="width: 60px;">NO</th>
+                    <th class="pb-3">ACADEMIC YEAR</th>
+                    <th class="pb-3">YEAR</th>
+                    <th class="pb-3">STUDENT</th>
+                    <th class="pb-3">MAJOR</th>
+                    <th class="pb-3 text-end" style="width: 100px;">ACTIONS</th>
                 </tr>
             </thead>
             <tbody>
                 @php
                     $i = 1;
                 @endphp
-                @foreach ($student_records as $student_record)
-                    <tr>
-                        <td>{{ $i++ }}</td>
-                        <td>
+                @forelse ($student_records as $student_record)
+                    <tr class="border-bottom-soft">
+                        <td class="py-3 text-secondary">{{ $i++ }}</td>
+                        <td class="py-3 fw-semibold text-dark">
                             {{ $student_record->academic_year->academic_year }}
-                            @if ($student_record->academic_year->status  == 'Current')
-                                <span class="badge bg-success">{{ $student_record->academic_year->status }}</span>
+                             @if ($student_record->academic_year->status == 'Current')
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1fw-medium">
+                                    <i class="fa-solid fa-check me-1"></i> Current
+                                </span>
                             @else
-                                <span class="badge bg-secondary">{{ $student_record->academic_year->status }}</span>
+                                <span class="badge bg-light text-secondary border rounded-pill px-3 py-1 fw-medium">
+                                    <i class="fa-solid fa-rotate-left me-1"></i> Old
+                                </span>
                             @endif
                         </td>
-                        <td>{{ $student_record->year->year_name }}</td>
-                        <td>{{ $student_record->student->name }}</td>
-                        <td>{{ $student_record->student->major->major_name }}</td>
-                        <td class="text-end">
-                            <a href="{{ route('backend.student_records.edit', $student_record->record_id) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-edit"></i></a>
-                            <button class="btn btn-sm btn-outline-danger delete" data-id="{{ $student_record->record_id }}"><i class="fa-solid fa-trash"></i></button>
+                        <td class="py-3">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2.5 py-1 fw-semibold">
+                                {{ $student_record->year->year_name }}
+                            </span>
+                        </td>
+                        <td class="py-3 fw-semibold text-dark">
+                            {{ $student_record->student->name }}
+                        </td>
+                        <td class="py-3 text-secondary small">
+                            <i class="fa-solid fa-graduation-cap me-1 text-muted opacity-50"></i>{{ $student_record->student->major->major_name ?? 'N/A' }}
+                        </td>
+                        <td class="py-3 text-end">
+                            <a href="{{ route('backend.student_records.edit', $student_record->record_id) }}" 
+                               class="btn btn-sm btn-light text-secondary border me-1 rounded-2">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <button class="btn btn-sm btn-light text-danger border delete rounded-2" 
+                                    data-id="{{ $student_record->record_id }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-folder-open fs-3 d-block mb-2"></i>
+                            No Student Records Found.
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
-        {{ $student_records->links() }}
     </div>
 
-     <!-- Hidden Delete Form -->
-    <form id="deleteForm" action="" method="POST" class="d-none">
-        @csrf
-        @method('DELETE')
-    </form>
+    <!-- Pagination -->
+    <div class="card-footer bg-white border-0 py-3 px-4">
+        {{ $student_records->links() }}
+    </div>
+</div>
+
+<!-- Hidden Delete Form -->
+<form id="deleteForm" action="" method="POST" class="d-none">
+    @csrf
+    @method('DELETE')
+</form>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if(session('success'))
+    <script>    
+        Swal.fire({
+            title: "အောင်မြင်ပါသည်။",
+            text: "{{ session('success') }}",
+            icon: "success",
+            confirmButtonText: "လက်ခံသည်",
+            confirmButtonColor: "#0d6efd"
+        });
+    </script>
+    @endif
 @endsection
+
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
+
+        // Delete Logic
         $('tbody').on('click', '.delete', function(e) {
             e.preventDefault();
             

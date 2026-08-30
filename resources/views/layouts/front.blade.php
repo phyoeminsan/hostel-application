@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniLodge - Hostel Management System</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>PUPL - Faculty Of Computing</title>
+    <link rel="icon" type="image/png" href="{{ asset('front-assets/images/circle.png') }}">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -21,8 +23,8 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom sticky-top custom-navbar">
         <div class="container">
             <a class="navbar-brand fw-bold text-primary fs-4 d-flex align-items-center gap-2" href="#">
-                <i class="bi bi-building-check fs-3"></i>
-                <span>HMS Portal</span>
+                <img src="{{ asset('front-assets/images/logo.jpg') }}" alt="HMS Portal Logo" height="40" class="d-inline-block align-text-top">
+                <span class="text-dark fw-bold">Faculty Of Computing</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -230,12 +232,12 @@
                                     <span>{{ Auth::guard('student')->user()->name }}</span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ route('student.profile') }}">Profile</a></li>
+                                    <li><a class="btn btn-outline-secondary dropdown-item" href="{{ route('student.profile') }}">Profile</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form action="{{ route('student.logout') }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="btn btn-outline-secondary   text-danger  dropdown-item">Logout</button>
+                                            <button type="submit" class="btn btn-outline-secondary text-danger  dropdown-item">Logout</button>
                                         </form>
                                     </li>
                                 </ul>

@@ -18,10 +18,11 @@ class AdminLoginController extends Controller
         // 1. အချက်အလက် မဖြည့်ခဲ့လျှင် (Warning Alert)
         $request->validate([
             'email'    => 'required|string',
-            'password' => 'required|string',
+            'password' => 'required|string|min:8',
         ], [
-            'email.required'    => 'Email သို့မဟုတ် Username ဖြည့်သွင်းပေးပါ။',
-            'password.required' => 'Password ဖြည့်သွင်းပေးပါ။',
+            'email.required'    => 'Email သို့မဟုတ် Username ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
+            'password.required' => 'Password ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
+            'password.min'      => 'လျှို့ဝှက်နံပါတ်သည် အနည်းဆုံး ၈ လုံး ရှိရပါမည်။',
         ]);
 
         $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';

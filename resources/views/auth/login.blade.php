@@ -30,10 +30,10 @@
                     </div>
 
                     <!-- Right Side: Login Form -->
-                    <div class="col-md-6 bg-white p-4 p-sm-5 d-flex flex-column justify-content-between">
+                    <div class="col-md-6 bg-white p-4 p-sm-5 d-flex flex-column justify-content-center">
                         <div>
                             <div class="text-center mb-4">
-                               <h2 class="fw-bold mb-1" style="color: #0f172a;">STUDENT LOGIN</h2>
+                                <h2 class="fw-bold mb-1" style="color: #0f172a;">STUDENT LOGIN</h2>
                                 <p class="text-muted small">အဆောင်လျှောက်လွှာနှင့် အချက်အလက်များကို ကြည့်ရှုရန် ဝင်ရောက်ပါ</p>
                             </div>
 
@@ -50,7 +50,7 @@
                                 </div>
 
                                 <!-- Password Label & Input with Eye Toggle -->
-                                  <div class="mb-2">
+                                <div class="mb-2">
                                     <label for="password" class="form-label small fw-semibold text-dark">Password</label>
                                     <div class="position-relative">
                                         <input type="password" name="password" id="password" class="form-control form-control-lg rounded-4 fs-6 bg-light border-0 px-3 py-3 pe-5" placeholder="Password">
@@ -64,61 +64,65 @@
                                     @enderror
                                 </div>
 
-                                <div class="text-end mb-4">
-                                    <a href="{{ route('password.request') }}" class="small text-muted text-decoration-none">Recovery Password</a>
+                                <!-- Remember Me Checkbox -->
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <label class="form-check-label small text-muted" for="remember">
+                                        Remember Me
+                                    </label>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary text-white w-100 py-3 rounded-4 fw-bold shadow-sm">
-                                    Sign In
+                                    <i class="bi bi-box-arrow-in-right me-1"></i>Sign In
                                 </button>
                             </form>
                         </div>
 
-                        <div class="mt-4 text-center">
+                        <!-- Copyright (mt-5 သို့ ပြောင်းထားပါသည်) -->
+                        <div class="mt-5 text-center">
                             <small class="text-muted">&copy; {{ date('Y') }} UniLodge Hostel System</small>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-{{-- ၁။ Roll No သို့မဟုတ် Password တစ်ခုခု မှားယွင်းနေပါက အနီရောင် Box ပြရန် --}}
-@if ($errors->has('auth_failed'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'ဝင်ရောက်၍ မရပါ!',
-            text: '{{ $errors->first("auth_failed") }}',
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'ပြန်လည်ကြိုးစားပါ'
-        });
-    </script>
+    {{-- ၁။ Roll No သို့မဟုတ် Password တစ်ခုခု မှားယွင်းနေပါက အနီရောင် Box ပြရန် --}}
+    @if ($errors->has('auth_failed'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'ဝင်ရောက်၍ မရပါ!',
+                text: '{{ $errors->first("auth_failed") }}',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ပြန်လည်ကြိုးစားပါ'
+            });
+        </script>
 
-{{-- ၂။ Password (၈) လုံး မပြည့်ပါက အနီရောင် Box ပြရန် --}}
-@elseif ($errors->has('password') && $errors->first('password') === 'လျှို့ဝှက်နံပါတ်သည် အနည်းဆုံး ၈ လုံး ရှိရပါမည်။')
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'ဝင်ရောက်၍ မရပါ!',
-            text: '{{ $errors->first("password") }}',
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'ပြန်လည်ကြိုးစားပါ'
-        });
-    </script>
+    {{-- ၂။ Password (၈) လုံး မပြည့်ပါက အနီရောင် Box ပြရန် --}}
+    @elseif ($errors->has('password') && $errors->first('password') === 'လျှို့ဝှက်နံပါတ်သည် အနည်းဆုံး ၈ လုံး ရှိရပါမည်။')
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'ဝင်ရောက်၍ မရပါ!',
+                text: '{{ $errors->first("password") }}',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ပြန်လည်ကြိုးစားပါ'
+            });
+        </script>
 
-{{-- ၃။ Field တစ်ခုခု ကွက်လပ်ထားခဲ့ပါက ဝါးရောင် Alert Box ပြရန် --}}
-@elseif ($errors->has('roll_no') || $errors->has('password'))
-    <script>
-        Swal.fire({
-            icon: 'warning',
-            title: 'အချက်အလက် လိုအပ်နေပါသည်!',
-            text: 'ကျေးဇူးပြု၍ ကျောင်းသားနံပါတ် နှင့် လျှို့ဝှက်နံပါတ်ကို ဖြည့်သွင်းပေးပါ',
-            confirmButtonColor: '#f39c12',
-            confirmButtonText: 'နားလည်ပါပြီ'
-        });
-    </script>
-@endif
+    {{-- ၃။ Field တစ်ခုခု ကွက်လပ်ထားခဲ့ပါက ဝါးရောင် Alert Box ပြရန် --}}
+    @elseif ($errors->has('roll_no') || $errors->has('password'))
+        <script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'အချက်အလက် လိုအပ်နေပါသည်!',
+                text: 'ကျေးဇူးပြု၍ ကျောင်းသားနံပါတ် နှင့် လျှို့ဝှက်နံပါတ်ကို ဖြည့်သွင်းပေးပါ',
+                confirmButtonColor: '#f39c12',
+                confirmButtonText: 'နားလည်ပါပြီ'
+            });
+        </script>
+    @endif
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
