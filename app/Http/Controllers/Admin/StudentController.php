@@ -105,36 +105,29 @@ class StudentController extends Controller
 
    public function login(Request $request)
     {
-        // 1. အချက်အလက် မဖြည့်ခဲ့လျှင် သို့မဟုတ် password ၈ လုံး မပြည့်ပါက စစ်ဆေးမည်
         $request->validate([
-            'email'    => ['required', 'string'],
+            'roll_no'  => ['required', 'string'],
             'password' => ['required', 'string', 'min:8'],
         ], [
-            'email.required'    => 'Email သို့မဟုတ် Username ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
+            'roll_no.required'  => 'ကျောင်းသားနံပါတ် ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
             'password.required' => 'Password ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
             'password.min'      => 'လျှို့ဝှက်နံပါတ်သည် အနည်းဆုံး ၈ လုံး ရှိရပါမည်။',
         ]);
 
-        $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
         $credentials = [
-            $fieldType => $request->email,
+            'roll_no'  => $request->roll_no,
             'password' => $request->password,
         ];
 
-        // Remember Me ပါဝင်လိုပါက အောက်ပါအတိုင်း $request->has('remember') ထည့်ပေးနိုင်သည်
-        $remember = $request->has('remember');
-
-        // 2. Login အောင်မြင်ပါက
-        if (Auth::guard('admin')->attempt($credentials, $remember)) {
+        if (Auth::guard('student')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/backend');
+            $request->session()->regenerateToken();
+            return redirect()->intended('/');
         }
 
-        // 3. အချက်အလက် မှားယွင်းခဲ့လျှင် (Error Alert)
         return back()->withErrors([
-            'auth_failed' => 'Email/Username သို့မဟုတ် Password မှားယွင်းနေပါသည်။',
-        ])->withInput($request->only('email'));
+            'auth_failed' => 'ကျောင်းသားနံပါတ် သို့မဟုတ် Password မှားယွင်းနေပါသည်။',
+        ])->withInput($request->only('roll_no'));
     }
     public function logout(Request $request)
     {

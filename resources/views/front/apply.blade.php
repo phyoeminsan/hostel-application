@@ -1,6 +1,22 @@
 @extends('layouts.front')
 @section('content')
     <div class="container py-5">
+        {{-- SweetAlert2 CDN (Layout ထဲမှာ မပါသေးပါက ထည့်ပါ) --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if ($errors->has('apply_date'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'အချက်အလက် လိုအပ်နေပါသည်!',
+                    text: "{{ $errors->first('apply_date') }}",
+                    confirmButtonColor: '#f32512',
+                    confirmButtonText: 'နားလည်ပါပြီ'
+                });
+            });
+        </script>
+    @endif
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
@@ -63,7 +79,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label text-secondary fw-semibold small">Apply Date</label>
-                                        <input type="date" name="date" class="form-control form-control-lg fs-6 border-1 rounded-3 shadow-sm" placeholder="your apply date">
+                                        <input type="date" name="apply_date" class="form-control @error('apply_date') is-invalid
+                                        @enderror form-control-lg fs-6 border-1 rounded-3 shadow-sm" placeholder="your apply date">
+                                        @error('apply_date')
+                                            <div class="invalid-feedback d-block ms-1">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label text-secondary fw-semibold small">Address</label>
@@ -75,7 +97,7 @@
                             <div class="alert alert-primary border-0 bg-primary-subtle text-primary rounded-3 d-flex align-items-center p-3 mb-4">
                                 <i class="bi bi-info-circle-fill fs-5 me-3 flex-shrink-0"></i>
                                 <div class="small">
-                                    လျှောက်လွှာ တင်သွင်းပြီးပါက Status မှာ <strong>Pending</strong> ဖြစ်မည်ဖြစ်ပြီး Admin မှ အတည်ပြုပြီးမှသာ Room & Payment ဆက်လက်လုပ်ဆောင်ရပါမည်။
+                                    လျှောက်လွှာ တင်သွင်းပြီးပါက Status မှာ <strong>Pending</strong> ဖြစ်မည်ဖြစ်ပြီး ကျောင်းဘက် မှ အတည်ပြုပြီးမှသာ Payment ဆက်လက်လုပ်ဆောင်ရပါမည်။
                                 </div>
                             </div>
 

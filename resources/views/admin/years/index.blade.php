@@ -29,7 +29,7 @@
                 <thead class="bg-light border-bottom text-muted small text-uppercase">
                     <tr>
                         <th class="ps-4 py-3" style="width: 80px;">No</th>
-                        <th class="py-3">Year Name</th>
+                        <th class="py-3 text-start" style="width: 10%;">YEAR NAME</th>
                         <th class="pe-4 py-3 text-end" style="width: 150px;">Actions</th>
                     </tr>
                 </thead>
@@ -39,7 +39,7 @@
                             <td class="ps-4 py-3 text-muted fw-semibold">
                                 {{ method_exists($years, 'firstItem') && $years->firstItem() ? $years->firstItem() + $index : $index + 1 }}
                             </td>
-                            <td class="py-3">
+                            <td class="py-3 text-start">
                                 <span class="fw-bold text-dark fs-6">{{ $year->year_name }}</span>
                             </td>
                             <td class="pe-4 py-3 text-end">

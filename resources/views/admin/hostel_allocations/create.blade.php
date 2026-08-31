@@ -38,7 +38,7 @@
             <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
                 <div class="card-header bg-light border-bottom py-3 px-4">
                     <h6 class="mb-0 fw-bold text-dark d-flex align-items-center">
-                        <i class="fa-solid fa-bed text-primary me-2"></i> Allocation Form
+                        <i class="fa-solid fa-building-user fa-lg me-2"></i> Allocation Form
                     </h6>
                 </div>
 

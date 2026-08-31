@@ -77,7 +77,7 @@
                                 မလုပ်တော့ပါ
                             </a>
                             <button type="submit" class="btn btn-warning px-4 py-2 rounded-pill fw-semibold shadow-sm">
-                                <i class="fa-solid fa-rotate me-1"></i> ပြင်ဆင်ချက်များ သိမ်းမည်
+                                <i class="fa-solid fa-arrows-rotate me-1"></i>  ပြင်ဆင်ချက်များ သိမ်းမည်
                             </button>
                         </div>
                     </form>

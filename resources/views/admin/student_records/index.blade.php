@@ -60,6 +60,7 @@
                             </span>
                         </td>
                         <td class="py-3 fw-semibold text-dark">
+                            <i class="fa-solid fa-user me-1 text-primary"></i>
                             {{ $student_record->student->name }}
                         </td>
                         <td class="py-3 text-secondary small">

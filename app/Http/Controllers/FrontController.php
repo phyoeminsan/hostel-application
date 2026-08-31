@@ -25,7 +25,7 @@ class FrontController extends Controller
     }
 
     public function showApplyForm($id){
-
+        
         $hostel = Hostel::findOrFail($id);
 
         // 1. Login ဝင်ထားသော Student ကို ရယူခြင်း
@@ -62,7 +62,10 @@ class FrontController extends Controller
     {
         $request->validate([
             'hostel_id' => 'required',
-            'date' => 'required|date',
+            'apply_date' => 'required|date',
+        ],
+        [
+            'apply_date.required' => 'လျှောက်ထားသည့် ရက်စွဲ ဖြည့်သွင်းရန် လိုအပ်ပါသည်။',
         ]);
 
         $studentUser = Auth::guard('student')->user();
@@ -79,7 +82,7 @@ class FrontController extends Controller
         $hostel_application = Hostel_application::create([
             'record_id' => $student_record->record_id,
             'hostel_id' => $request->hostel_id,
-            'apply_date' => $request->date,
+            'apply_date' => $request->apply_date,
             'status' => 'pending',
         ]);
 

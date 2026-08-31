@@ -137,7 +137,7 @@
                 <!-- Footer Action Buttons -->
                 <div class="mt-4 pt-3 d-flex justify-content-end gap-2 border-top">
                     <a href="{{ route('backend.rooms.index') }}" class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-medium">
-                        မလုပ်တော့ပါ
+                        <i class="fa-solid fa-xmark fs-8 me-1"></i> မလုပ်တော့ပါ
                     </a>
                     <button type="submit" class="btn btn-sm btn-warning rounded-pill px-4 fw-bold text-dark shadow-sm" style="background-color: #FFC107; border: none;">
                         <i class="fa-solid fa-rotate me-1"></i> ပြင်ဆင်ချက်များ သိမ်းမည်

@@ -30,7 +30,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark shadow-lg border border-secondary border-opacity-25 rounded-3 mt-2 w-100" aria-labelledby="sidebarAdminDropdown">
                                 <li>
-                                    <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="#">
+                                    <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="{{ route('backend.profile.edit') }}">
                                         <i class="fa-solid fa-user text-info"></i> <span>Profile</span>
                                     </a>
                                 </li>
@@ -128,7 +128,7 @@
                     </a>
 
                     <a class="nav-link {{ request()->routeIs('backend.hostel_allocations.*') ? 'active' : '' }}" href="{{ route('backend.hostel_allocations') }}">
-                        <i class="fa-solid fa-credit-card me-2"></i> Hostel Allocations
+                        <i class="fa-solid fa-building-user me-2"></i> Hostel Allocations
                     </a>
                 </div>
             </div>

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-start mb-4">
-    <h3 class="fw-bold text-dark mb-0">Room Management</h3>
+    <h3 class="fw-bold text-dark mb-0">Add New Room</h3>
 </div>
 <div class="container-fluid py-4" style="max-width: 700px;">
     <!-- Main Card -->
@@ -145,10 +145,10 @@
                 <!-- Footer Action Buttons -->
                 <div class="mt-4 pt-3 d-flex justify-content-end gap-2 border-top">
                     <a href="{{ route('backend.rooms.index') }}" class="btn btn-outline-danger rounded-pill px-4 fw-medium">
-                        မလုပ်တော့ပါ
+                        <i class="fa-solid fa-xmark fs-8 me-1"></i> မလုပ်တော့ပါ
                     </a>
                     <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
-                        <i class="fa-solid fa-check me-1"></i> သိမ်းဆည်းမည်
+                        <i class="fa-solid fa-check fs-8 me-1 text-light"></i> သိမ်းဆည်းမည်
                     </button>
                 </div>
             </form>

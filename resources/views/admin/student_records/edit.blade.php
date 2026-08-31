@@ -105,10 +105,10 @@
                             <!-- Action Buttons -->
                             <div class="d-flex align-items-center justify-content-end gap-2">
                                 <a href="{{ route('backend.student_records.index') }}" class="btn btn-outline-danger border px-4 py-2 rounded-pill fw-semibold">
-                                    မလုပ်တော့ပါ
+                                    <i class="fa-solid fa-xmark fs-8 me-1"></i> မလုပ်တော့ပါ
                                 </a>
                                 <button type="submit" class="btn btn-warning px-4 py-2 rounded-pill fw-semibold shadow-sm">
-                                    <i class="fa-solid fa-rotate me-1"></i> ပြင်ဆင်ချက်များ သိမ်းမည်
+                                    <i class="fa-solid fa-check fs-8 me-1 text-dark"></i> ပြင်ဆင်ချက်များ သိမ်းမည်
                                 </button>
                             </div>
                         </form>

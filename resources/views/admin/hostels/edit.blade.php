@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold text-dark mb-1">Edit Major Details</h3>
+        <h3 class="fw-bold text-dark mb-1">Edit Hoste Details</h3>
     </div>
 </div>
 <div class="container-fluid py-4" style="max-width: 850px;"> <!-- Width ကို အချိုးကျအောင် ထိန်းထားပါသည် -->
@@ -131,11 +131,11 @@
 
                 <!-- Footer Buttons -->
                 <div class="mt-4 pt-2 d-flex justify-content-end gap-2">
-                    <a href="{{ route('backend.hostels.index') }}" class="btn btn-light rounded-pill px-4 text-secondary fw-medium">
-                        မလုပ်တော့ပါ
+                    <a href="{{ route('backend.hostels.index') }}" class="btn btn-outline-danger rounded-pill px-4 fw-medium">
+                        <i class="fa-solid fa-xmark fs-8 me-1"></i> မလုပ်တော့ပါ
                     </a>
                     <button type="submit" class="btn btn-warning rounded-pill px-4 text-dark fw-bold shadow-sm" style="background-color: #FFC107; border: none;">
-                        <i class="fa-solid fa-rotate me-1"></i> ပြင်ဆင်ချက်များ သိမ်းဆည်းမည်
+                        <i class="fa-solid fa-arrows-rotate me-1"></i> ပြင်ဆင်ချက်များ သိမ်းမည်
                     </button>
                 </div>
 

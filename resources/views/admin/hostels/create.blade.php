@@ -130,10 +130,10 @@
                             <!-- Action Buttons -->
                             <div class="d-flex align-items-center justify-content-end gap-2">
                                 <a href="{{ route('backend.hostels.index') }}" class="btn btn-outline-danger border px-4 py-2 rounded-pill fw-semibold">
-                                    မလုပ်တော့ပါ
+                                    <i class="fa-solid fa-xmark fs-8 me-1"></i> မလုပ်တော့ပါ
                                 </a>
                                 <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill fw-semibold shadow-sm">
-                                    သိမ်းဆည်းမည်
+                                    <i class="fa-solid fa-check fs-8 me-1 text-light"></i> သိမ်းဆည်းမည်
                                 </button>
                             </div>
                         </form>

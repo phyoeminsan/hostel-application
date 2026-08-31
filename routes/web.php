@@ -68,5 +68,9 @@ Route::group(['prefix' => 'backend','as' => 'backend.','middleware' => ['auth:ad
 
     Route::post('hostel_allocations/{id}/active', [App\Http\Controllers\Admin\Hostel_allocationController:: class, 'active'])->name('hostel_allocations.active');
     Route::post('hostel_allocations/{id}/unactive', [App\Http\Controllers\Admin\Hostel_allocationController:: class, 'unactive'])->name('hostel_allocations.unactive');
+
+    Route::get('profile', [App\Http\Controllers\Admin\AdminLoginController::class, 'edit'])->name('profile.edit');
+    Route::put('profile/update', [App\Http\Controllers\Admin\AdminLoginController::class, 'update'])->name('profile.update');
+    Route::put('profile/password', [App\Http\Controllers\Admin\AdminLoginController::class, 'updatePassword'])->name('profile.password.update');
 });
 
