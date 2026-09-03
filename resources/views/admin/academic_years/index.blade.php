@@ -8,9 +8,16 @@
         <div>
             <h3 class="fw-bold text-dark mb-1">Academic Years</h3>
         </div>
-        <a href="{{ route('backend.academic_years.create') }}" class="btn btn-primary px-3 py-2 rounded-pill fw-semibold shadow-sm">
-            <i class="fa-solid fa-plus me-1"></i> Add New Academic Year
-        </a>
+        <div class="d-flex gap-2">
+            <!-- Trash Button -->
+            <a href="{{ route('backend.academic_years.trash') }}" class="btn btn-outline-danger px-3 py-2 rounded-pill fw-semibold shadow-sm">
+                <i class="fa-solid fa-trash-can me-1"></i> Trash Bin
+            </a>
+            <!-- Add New Button -->
+            <a href="{{ route('backend.academic_years.create') }}" class="btn btn-primary px-3 py-2 rounded-pill fw-semibold shadow-sm">
+                <i class="fa-solid fa-plus me-1"></i> Add New Academic Year
+            </a>
+        </div>
     </div>
 
     <!-- Table Card Container -->
@@ -92,24 +99,23 @@
         @method('DELETE')
     </form>
 </div>
-    @if(session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'အောင်မြင်ပါသည်။',
-            text: "{{ session('success') }}",
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
-        });
-    </script>
-    @endif
 @endsection
 
 @section('script')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'အောင်မြင်ပါသည်။',
+                text: "{{ session('success') }}",
+                confirmButtonText: 'လက်ခံသည်',
+                confirmButtonColor: '#0d6efd',
+                customClass: {
+                    popup: 'rounded-4'
+                }
+            });
+        </script>
+    @endif
 <script>
     $(document).ready(function() {
 
@@ -122,7 +128,7 @@
 
             Swal.fire({
                 title: 'သေချာပါသလား?',
-                text: 'ဤအချက်အလက်ကို ဖျက်လိုက်ပါက ပြန်လည်ရယူနိုင်တော့မည် မဟုတ်ပါ။',
+                text: 'ဤအချက်အလက်ကို အမှိုက်ပုံးထဲသို့ ခေတ္တဖျက်ထုတ်ပါမည်။',
                 icon: 'warning',
                 showCancelButton: true,
                 reverseButtons: true,

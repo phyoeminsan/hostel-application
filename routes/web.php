@@ -43,7 +43,12 @@ Route::middleware(['auth:student'])->group(function () {
 
 Route::group(['prefix' => 'backend','as' => 'backend.','middleware' => ['auth:admin']],function(){
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+     // Soft Delete / Trash Routes
+    Route::get('academic_years/trash', [App\Http\Controllers\Admin\Academic_yearController::class, 'trash'])->name('academic_years.trash');
+    Route::post('academic_years/{id}/restore', [App\Http\Controllers\Admin\Academic_yearController::class, 'restore'])->name('academic_years.restore');
+    Route::delete('academic_years/{id}/force-delete', [App\Http\Controllers\Admin\Academic_yearController::class, 'forceDelete'])->name('academic_years.forceDelete');
     Route::resource('academic_years', App\Http\Controllers\Admin\Academic_yearController::class);
+
     Route::resource('years', App\Http\Controllers\Admin\YearController::class);
     Route::resource('majors', App\Http\Controllers\Admin\MajorController::class);
     Route::resource('students', App\Http\Controllers\Admin\StudentController::class);

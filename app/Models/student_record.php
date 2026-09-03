@@ -19,7 +19,7 @@ class student_record extends Model
     ];
 
     public function academic_year(){
-        return $this->belongsTo(Academic_year::class, 'academic_year_id');
+        return $this->belongsTo(Academic_year::class, 'academic_year_id')->withTrashed();
     }
 
     public function year(){
