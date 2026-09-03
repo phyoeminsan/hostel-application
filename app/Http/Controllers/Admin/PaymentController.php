@@ -14,11 +14,7 @@ class PaymentController extends Controller
 {
     public function payments()
     {
-<<<<<<< HEAD
         $payments = Payment::with(['hostel_application.student_record.student'])->paginate(12);
-=======
-        $payments = Payment::with(['hostel_application.student_record.student'])->orderBy('payment_id','DESC')->paginate(12);
->>>>>>> 62d1948 (feat: initial commit of local hostel application project)
         return view('admin.payments.index', compact('payments'));
     }
 

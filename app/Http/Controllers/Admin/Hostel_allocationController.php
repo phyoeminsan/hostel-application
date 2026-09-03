@@ -16,12 +16,7 @@ class Hostel_allocationController extends Controller
             'payment.hostel_application.student_record.student',        
             'payment.hostel_application.student_record.year', 
             'room.hostel'                         
-<<<<<<< HEAD
-        ])->paginate(13);
-=======
         ])->orderBy('allocation_id','DESC')->paginate(13);
->>>>>>> 62d1948 (feat: initial commit of local hostel application project)
-
         return view('admin.hostel_allocations.index', compact('hostel_allocations'));
     }
 

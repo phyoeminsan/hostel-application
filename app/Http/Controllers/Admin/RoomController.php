@@ -16,11 +16,7 @@ class RoomController extends Controller
      */
     public function index(Request $request)
     {
-<<<<<<< HEAD
         $rooms = Room::orderBy('hostel_id','ASC');
-=======
-        $rooms = Room::orderBy('hostel_id','DESC');
->>>>>>> 62d1948 (feat: initial commit of local hostel application project)
 
         if($request->has('hostel_id') && $request->hostel_id!=''){
             $rooms->where('hostel_id', $request->hostel_id);
