@@ -15,7 +15,11 @@ class HostelController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $hostels = Hostel::orderBy('hostel_id', 'ASC')->paginate(10);
+=======
+        $hostels = Hostel::orderBy('hostel_id', 'DESC')->paginate(10);
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
         return view('admin.hostels.index', compact('hostels'));
     }
 

@@ -96,7 +96,11 @@
 
                         <div class="text-end pt-3 border-top">
                             <button type="submit" class="btn btn-primary px-4 fw-semibold rounded-3">
+<<<<<<< HEAD
                                 <i class="fa-solid fa-floppy-disk me-1"></i> Save Changes
+=======
+                                <i class="fa-solid fa-check me-1"></i> Save Changes
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
                             </button>
                         </div>
                     </form>
@@ -126,7 +130,11 @@
                                 <span class="input-group-text bg-light border-end-0 text-muted">
                                     <i class="fa-solid fa-lock"></i>
                                 </span>
+<<<<<<< HEAD
                                 <input type="password" name="current_password" id="current_password" class="form-control border-start-0 border-end-0 @error('current_password') is-invalid @enderror" required>
+=======
+                                <input type="password" name="current_password" id="current_password" class="form-control border-start-0 border-end-0 @error('current_password') is-invalid @enderror">
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
                                 <button class="btn btn-light border border-start-0 text-muted" type="button" onclick="togglePassword('current_password', this)">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
@@ -145,7 +153,11 @@
                                 <span class="input-group-text bg-light border-end-0 text-muted">
                                     <i class="fa-solid fa-key"></i>
                                 </span>
+<<<<<<< HEAD
                                 <input type="password" name="password" id="new_password" class="form-control border-start-0 border-end-0 @error('password') is-invalid @enderror" required>
+=======
+                                <input type="password" name="password" id="new_password" class="form-control border-start-0 border-end-0 @error('password') is-invalid @enderror">
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
                                 <button class="btn btn-light border border-start-0 text-muted" type="button" onclick="togglePassword('new_password', this)">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
@@ -164,7 +176,11 @@
                                 <span class="input-group-text bg-light border-end-0 text-muted">
                                     <i class="fa-solid fa-key"></i>
                                 </span>
+<<<<<<< HEAD
                                 <input type="password" name="password_confirmation" id="password_confirmation" class="form-control border-start-0 border-end-0" required>
+=======
+                                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control border-start-0 border-end-0">
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
                                 <button class="btn btn-light border border-start-0 text-muted" type="button" onclick="togglePassword('password_confirmation', this)">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>

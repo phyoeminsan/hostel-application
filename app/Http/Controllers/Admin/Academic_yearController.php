@@ -15,7 +15,11 @@ class Academic_yearController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $academic_years = Academic_year::orderBy('academic_year_id', 'ASC')->paginate(10);
+=======
+        $academic_years = Academic_year::orderBy('academic_year_id', 'DESC')->paginate(10);
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
         return view('admin.academic_years.index', compact('academic_years'));
     }
 

@@ -19,7 +19,11 @@ class Student_recordController extends Controller
      */
     public function index(Request $request)
     {
+<<<<<<< HEAD
         $student_records = Student_record::orderBy('record_id', 'ASC');
+=======
+        $student_records = Student_record::orderBy('record_id', 'DESC');
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
 
          if($request->has('year_id') && $request->year_id!=''){
             $student_records->where('year_id', $request->year_id);

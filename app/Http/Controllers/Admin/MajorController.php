@@ -14,7 +14,11 @@ class MajorController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $majors = Major::orderBy('major_id', 'ASC')->paginate(10);
+=======
+        $majors = Major::orderBy('major_id', 'DESC')->paginate(10);
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
         return view('admin.majors.index', compact('majors'));
     }
 

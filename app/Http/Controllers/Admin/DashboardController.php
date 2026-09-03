@@ -26,7 +26,12 @@ class DashboardController extends Controller
                 'payment.hostel_allocation.room'
             ])
             ->latest()
+<<<<<<< HEAD
             ->take(5)
+=======
+            ->take(10)
+            ->orderBy('application_id', 'DESC')
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
             ->get();
 
         return view('admin.dashboard', compact(

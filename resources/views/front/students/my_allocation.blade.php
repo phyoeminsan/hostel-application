@@ -125,7 +125,11 @@
 
                     @else
                         <div class="text-center py-5">
+<<<<<<< HEAD
                             <i class="bi bi-building-dash text-muted opacity-50 display-1"></i>
+=======
+                            <i class="bi bi-hotel text-muted opacity-50 display-1"></i>
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
                             <h4 class="mt-3 text-dark fw-bold">လက်တလော အဆောင်နေရာချထားပေးခြင်း မရှိသေးပါ။</h4>
                             <p class="text-muted">ကျောင်းဘက် မှ စီစဉ်ပေးပြီးပါက ဤနေရာတွင် ကြည့်ရှုနိုင်မည်ဖြစ်ပါသည်။</p>
                         </div>

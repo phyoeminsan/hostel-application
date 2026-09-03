@@ -15,7 +15,11 @@ class YearController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $years = Year::orderBy('year_id')->paginate(10);
+=======
+        $years = Year::orderBy('year_id','DESC')->paginate(10);
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
         return view('admin.years.index', compact('years'));
     }
 

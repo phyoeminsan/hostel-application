@@ -19,7 +19,11 @@ class StudentController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $students = Student::orderBy('student_id')->paginate(10);
+=======
+        $students = Student::orderBy('student_id','DESC')->paginate(10);
+>>>>>>> 62d1948 (feat: initial commit of local hostel application project)
         return view('admin.students.index', compact('students'));
     }
 
