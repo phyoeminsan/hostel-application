@@ -23,7 +23,7 @@ class StudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'roll_no' => 'required',
+            'roll_no' => 'required|unique:students,roll_no',
             'name' => 'required',
             'major_id' => 'required',
             'gender' => 'required',

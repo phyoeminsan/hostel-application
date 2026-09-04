@@ -15,40 +15,68 @@ class FrontController extends Controller
 {
     public function index(){
         $hostels = Hostel::orderBy('hostel_id')->paginate(3);
-        return view('front.index', compact('hostels'));
+
+        $existingApplication = null;
+        if (Auth::guard('student')->check()) {
+            $studentId = Auth::guard('student')->id();
+            
+            // Student Record ၏ record_id ကို ယူခြင်း
+            $studentRecord = Student_record::where('student_id', $studentId)->latest('record_id')->first();
+            
+            if ($studentRecord) {
+                $existingApplication = Hostel_application::where('record_id', $studentRecord->record_id)
+                    ->whereIn('status', ['pending', 'approved', 'rejected'])
+                    ->first();
+            }
+        }
+
+        return view('front.index', compact('hostels', 'existingApplication'));
     }
 
     public function hostels()
     {
         $hostels = Hostel::orderBy('hostel_id')->paginate(3);
-        return view('front.hostels', compact('hostels'));
+
+        $existingApplication = null;
+        if (Auth::guard('student')->check()) {
+            $studentId = Auth::guard('student')->id();
+            
+            $studentRecord = Student_record::where('student_id', $studentId)->latest('record_id')->first();
+            
+            if ($studentRecord) {
+                $existingApplication = Hostel_application::where('record_id', $studentRecord->record_id)
+                    ->whereIn('status', ['pending', 'approved', 'rejected'])
+                    ->first();
+            }
+        }
+
+        return view('front.hostels', compact('hostels', 'existingApplication'));
     }
 
     public function showApplyForm($id){
-        
         $hostel = Hostel::findOrFail($id);
 
-        // 1. Login ဝင်ထားသော Student ကို ရယူခြင်း
         $studentUser = Auth::guard('student')->user();
-        $studentId = $studentUser->student_id ?? Auth::id();
+        $studentId = $studentUser->student_id ?? Auth::guard('student')->id();
 
-        $existingApplication = Hostel_application::where('record_id', $studentId)
-        ->whereIn('status', ['pending', 'approved', 'rejected'])
-        ->first();
-
-        if ($existingApplication) {
-            return redirect()->back()->with('error', 'သင်သည် အဆောင်လျှောက်ထားပြီးဖြစ်ပါသဖြင့် ထပ်မံလျှောက်ထား၍ မရတော့ပါ။');
-        }
-        
+        // Student Record ရှာခြင်း
         $student_record = Student_record::with(['student', 'academic_year', 'year'])
                     ->where('student_id', $studentId)
                     ->latest('record_id')
                     ->first();
 
-        // 3. Gender ကို Student Record (သို့) Login ဝင်ထားသော Student ဆီမှ ယူမည်
+        if ($student_record) {
+            $existingApplication = Hostel_application::where('record_id', $student_record->record_id)
+                ->whereIn('status', ['pending', 'approved', 'rejected'])
+                ->first();
+
+            if ($existingApplication) {
+                return redirect()->route('index')->with('error', 'သင်သည် အဆောင်လျှောက်ထားပြီးဖြစ်ပါသဖြင့် ထပ်မံလျှောက်ထား၍ မရတော့ပါ။');
+            }
+        }
+
         $studentGender = $student_record->student->gender ?? $studentUser->gender ?? null;
 
-        // 4. Gender စစ်ဆေးခြင်း
         if ($studentGender && strtolower($hostel->gender) !== 'all') {
             if (strtolower(trim($studentGender)) !== strtolower(trim($hostel->gender))) {
                 return redirect()->route('index')->with('error', 'ကျေးဇူးပြု၍ သင်၏ Gender နှင့် ကိုက်ညီသော အဆောင်ကိုသာ ရွေးချယ်လျှောက်ထားနိုင်ပါသည်။');

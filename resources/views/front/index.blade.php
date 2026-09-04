@@ -115,8 +115,8 @@
                                         </button>
                                     
                                     @elseif (isset($existingApplication))
-                                        <!-- လျှောက်ထားပြီးသား ဖြစ်နေပါက (Pending, Approved, Rejected ကြိုက်တာဖြစ်ဖြစ်) -->
-                                        <button type="button" class="btn btn-warning w-100 rounded-pill">
+                                        <!-- Pending / Approved ဖြစ်နေပါက SweetAlert ပြမည့် ခလုတ် -->
+                                        <button type="button" class="btn btn-warning w-100 rounded-pill" onclick="showAlreadyAppliedAlert('{{ ucfirst($existingApplication->status) }}')">
                                             Already Applied ({{ ucfirst($existingApplication->status) }})
                                         </button>
 
@@ -181,15 +181,23 @@
                     }
                 });
             }
-
-            function showGenderAlert(hostelGender) {
+            function showAlreadyAppliedAlert(status) {
                 Swal.fire({
-                    icon: 'error',
-                    title: 'ရွေးချယ်၍ မရနိုင်ပါ!',
-                    text: 'ဤအဆောင်သည် (' + hostelGender + ') သီးသန့်ဖြစ်ပါသဖြင့် သင်၏ Gender နှင့် မကိုက်ညီပါ။',
+                    icon: 'warning',
+                    title: 'လျှောက်ထားပြီးဖြစ်ပါသည်!',
+                    text: 'သင်သည် အဆောင်လျှောက်လွှာ တင်ပြီးဖြစ်ပါသည်။ လက်ရှိအခြေအနေမှာ (' + status + ') ဖြစ်ပါသဖြင့် ထပ်မံလျှောက်ထား၍ မရနိုင်ပါ။',
                     confirmButtonColor: '#dc3545',
                     confirmButtonText: 'နားလည်ပါပြီ'
                 });
             }
+            // function showGenderAlert(hostelGender) {
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'ရွေးချယ်၍ မရနိုင်ပါ!',
+            //         text: 'ဤအဆောင်သည် (' + hostelGender + ') သီးသန့်ဖြစ်ပါသဖြင့် သင်၏ Gender နှင့် မကိုက်ညီပါ။',
+            //         confirmButtonColor: '#dc3545',
+            //         confirmButtonText: 'နားလည်ပါပြီ'
+            //     });
+            // }
             </script>
 @endsection

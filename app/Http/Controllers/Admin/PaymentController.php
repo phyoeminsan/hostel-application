@@ -14,7 +14,7 @@ class PaymentController extends Controller
 {
     public function payments()
     {
-        $payments = Payment::with(['hostel_application.student_record.student'])->paginate(12);
+        $payments = Payment::with(['hostel_application.student_record.student'])->orderBy('payment_id','DESC')->paginate(12);
         return view('admin.payments.index', compact('payments'));
     }
 

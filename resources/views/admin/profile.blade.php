@@ -96,7 +96,7 @@
 
                         <div class="text-end pt-3 border-top">
                             <button type="submit" class="btn btn-primary px-4 fw-semibold rounded-3">
-                                <i class="fa-solid fa-floppy-disk me-1"></i> Save Changes
+                                <i class="fa-solid fa-check me-1"></i> Save Changes
                             </button>
                         </div>
                     </form>

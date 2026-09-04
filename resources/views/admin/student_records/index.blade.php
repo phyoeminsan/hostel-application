@@ -8,6 +8,10 @@
         <i class="fa-solid fa-plus me-1"></i> Add New Record
     </a>
 </div>
+<!-- Table အပေါ်၊ Arrow ထိုးထားသော နေရာတွင် Search Input ထည့်ရန် -->
+<div class="d-flex justify-content-end mb-3">
+    <input type="text" id="searchInput" class="form-control w-25" placeholder="Search by name or major..." onkeyup="filterTable()">
+</div>
 
 <!-- Main List Card -->
 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
@@ -143,5 +147,23 @@
             });
         });
     });
+
+    function filterTable() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let table = document.querySelector("table"); // သင့် table ရဲ့ tag သို့မဟုတ် class/id
+        let rows = table.getElementsByTagName("tr");
+
+        // Table Header ကို ချန်ပြီး Data Rows များကို စစ်ဆေးမည်
+        for (let i = 1; i < rows.length; i++) {
+            let studentName = rows[i].getElementsByTagName("td")[3]?.textContent || ""; // 4 ခုမြောက် Column (STUDENT)
+            let major = rows[i].getElementsByTagName("td")[4]?.textContent || "";       // 5 ခုမြောက် Column (MAJOR)
+
+            if (studentName.toLowerCase().includes(input) || major.toLowerCase().includes(input)) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
 </script>
 @endsection

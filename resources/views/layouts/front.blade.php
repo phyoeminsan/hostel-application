@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>PUPL - Faculty Of Computing</title>
+    <title>Polytechnique University (Pang Long)</title>
     <link rel="icon" type="image/png" href="{{ asset('front-assets/images/circle.png') }}">
     
     <!-- Bootstrap 5 CSS -->
@@ -124,11 +124,7 @@
                                             <p class="text-muted small mb-2" style="line-height: 1.5;">
                                                 သင်လျှောက်ထားသော <strong>{{ $userNotification->hostel->hostel_name }}</strong> လျှောက်လွှာကို <span class="text-success fw-medium">လက်ခံအတည်ပြု</span> လိုက်ပါသည်။
                                             </p>
-<<<<<<< HEAD
-                                            <a href="{{ route('hostels.payment', $userNotification->application_id ?? $userNotification->id) }}" class="btn btn-sm btn-success w-100 fw-bold">
-=======
                                             <a href="{{ route('hostels.payment', $userNotification->application_id ?? $userNotification->id) }}" class="btn btn-sm btn-outline-success w-100 fw-bold">
->>>>>>> 62d1948 (feat: initial commit of local hostel application project)
                                                 <i class="bi bi-credit-card me-1"></i> Payment ပြုလုပ်ရန်
                                             </a>
 
@@ -176,11 +172,7 @@
                                                         <i class="bi bi-file-earmark-image me-1" style="font-size: 1.1rem; line-height: 0;"></i> ပုံပြန်ကြည့်ရန်
                                                     </button>
                                                 @endif
-<<<<<<< HEAD
                                                 <a href="{{ route('hostels.payment', $userNotification->application_id ?? $userNotification->id) }}" class="btn btn-sm btn-danger flex-fill fw-semibold d-inline-flex align-items-center justify-content-center py-2 style-0-8">
-=======
-                                                <a href="{{ route('hostels.payment', $userNotification->application_id ?? $userNotification->id) }}" class="btn btn-sm btn-outline-danger flex-fill fw-semibold d-inline-flex align-items-center justify-content-center py-2 style-0-8">
->>>>>>> 62d1948 (feat: initial commit of local hostel application project)
                                                     <i class="bi bi-arrow-repeat me-1" style="font-size: 1.1rem; line-height: 0;"></i>ငွေပြန်လည်ပေးချေရန်
                                                 </a>
                                             </div>

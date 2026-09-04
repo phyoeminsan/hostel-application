@@ -11,7 +11,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <span class="badge bg-primary-subtle text-primary fw-bold text-uppercase px-3 py-2 rounded-pill mb-2">Hostel Allocation Pass</span>
-                            <h3 class="mb-0 fw-bold"><i class="bi bi-house-door-fill me-2 text-primary"></i>ကျောင်းသား အဆောင်နေရာချထားမှု</h3>
+                            <h3 class="mb-0 fw-bold"><i class="fa-solid fa-building-user me-2 text-primary"></i>ကျောင်းသား အဆောင်နေရာချထားမှု</h3>
                         </div>
                         <div class="text-end d-none d-sm-block">
                             <i class="bi bi-building-check text-white-50 display-6"></i>
@@ -125,11 +125,7 @@
 
                     @else
                         <div class="text-center py-5">
-<<<<<<< HEAD
-                            <i class="bi bi-building-dash text-muted opacity-50 display-1"></i>
-=======
-                            <i class="bi bi-hotel text-muted opacity-50 display-1"></i>
->>>>>>> 62d1948 (feat: initial commit of local hostel application project)
+                            <i class="fa-solid fa-building-user text-muted opacity-50 display-1"></i>
                             <h4 class="mt-3 text-dark fw-bold">လက်တလော အဆောင်နေရာချထားပေးခြင်း မရှိသေးပါ။</h4>
                             <p class="text-muted">ကျောင်းဘက် မှ စီစဉ်ပေးပြီးပါက ဤနေရာတွင် ကြည့်ရှုနိုင်မည်ဖြစ်ပါသည်။</p>
                         </div>

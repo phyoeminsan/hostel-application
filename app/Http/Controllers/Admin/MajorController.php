@@ -14,7 +14,7 @@ class MajorController extends Controller
      */
     public function index()
     {
-        $majors = Major::orderBy('major_id', 'ASC')->paginate(10);
+        $majors = Major::orderBy('major_id', 'DESC')->paginate(10);
         return view('admin.majors.index', compact('majors'));
     }
 

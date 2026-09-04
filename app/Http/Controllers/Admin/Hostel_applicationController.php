@@ -9,7 +9,7 @@ use App\Models\hostel_application;
 class Hostel_applicationController extends Controller
 {
     public function hostel_applications(){
-        $hostel_applications = Hostel_application::orderBy('application_id', 'ASC')->paginate(13);
+        $hostel_applications = Hostel_application::orderBy('application_id', 'DESC')->paginate(13);
         return view('admin.hostel_applications.index', compact('hostel_applications'));
     }
 
