@@ -118,17 +118,17 @@
                             </a>
                         @endforeach
                     </div>
-
-                    <a class="nav-link {{ request()->routeIs('backend.hostel_applications.*') ? 'active' : '' }}" href="{{ route('backend.hostel_applications') }}">
-                        <i class="fa-solid fa-clipboard-list me-2"></i> Hostel Applications
+                    <a class="nav-link {{ request()->routeIs('backend.hostel_applications*') ? 'active' : '' }}" href="{{ route('backend.hostel_applications') }}">
+                        <i class="fa-solid fa-file-signature me-2"></i> 
+                        <span>Hostel Applications</span>
                     </a>
-
-                    <a class="nav-link {{ request()->routeIs('backend.payments.*') ? 'active' : '' }}" href="{{ route('backend.payments') }}">
-                        <i class="fa-solid fa-credit-card me-2"></i> Payments
+                    <a class="nav-link {{ request()->routeIs('backend.payments*') ? 'active' : '' }}" href="{{ route('backend.payments') }}">
+                        <i class="fa-solid fa-credit-card me-2"></i> 
+                        <span>Payments</span>
                     </a>
-
-                    <a class="nav-link {{ request()->routeIs('backend.hostel_allocations.*') ? 'active' : '' }}" href="{{ route('backend.hostel_allocations') }}">
-                        <i class="fa-solid fa-building-user me-2"></i> Hostel Allocations
+                    <a class="nav-link {{ request()->routeIs('backend.hostel_allocations*') ? 'active' : '' }}" href="{{ route('backend.hostel_allocations') }}">
+                        <i class="fa-solid fa-building-user me-2"></i> 
+                        <span>Hostel Allocations</span>
                     </a>
                 </div>
             </div>
